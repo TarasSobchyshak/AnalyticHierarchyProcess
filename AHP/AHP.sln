@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AHP.BL", "AHP.BL\AHP.BL.csproj", "{008B627B-D2FD-483E-98B2-D8246AB7BD8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AHP.App", "AHP.App\AHP.App.csproj", "{A30DC1BA-12A5-47FF-B4EC-BDACF3E05AD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{008B627B-D2FD-483E-98B2-D8246AB7BD8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{008B627B-D2FD-483E-98B2-D8246AB7BD8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{008B627B-D2FD-483E-98B2-D8246AB7BD8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A30DC1BA-12A5-47FF-B4EC-BDACF3E05AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A30DC1BA-12A5-47FF-B4EC-BDACF3E05AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A30DC1BA-12A5-47FF-B4EC-BDACF3E05AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A30DC1BA-12A5-47FF-B4EC-BDACF3E05AD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
