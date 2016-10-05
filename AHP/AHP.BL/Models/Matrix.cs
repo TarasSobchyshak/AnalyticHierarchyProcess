@@ -1,40 +1,37 @@
 ﻿using System;
-using static System.Math;
 
 namespace AHP.BL.Models
 {
-    public class Matrix
+    public class Matrix : ObservableObject
     {
-        public Matrix(int n)
-        {
-            A = new double[n, n];
-        }
-
-        public Matrix(int n,int m)
-        {
-            A = new double[n, m];
-        }
-
+        private int _n;
+        private int _m;
         public double[,] A { get; set; }
 
-        private int _n;
+        public Matrix(int n)
+        {
+            N = n;
+            M = n;
+            A = new double[_n, _m];
+        }
 
-        public int N {
-                get { return _n; }
+        public Matrix(int n, int m)
+        {
+            N = n;
+            M = m;
+            A = new double[_n, _m];
+        }
 
-                set { _n = value; }
-                    }
-
-        private int _m;
-
-        public int M {
-                get{ return _m; }
-
-                set { _m = value; }
-                    }
-
-
-        public int Dim => (int)Sqrt(A.Length);
+        public int N
+        {
+            get { return _n; }
+            set { _n = value; }
+        }
+        public int M
+        {
+            get { return _m; }
+            set { SetProperty(ref _m, value); }
+        }
 
         public Vector GetRow(int index)
         {
@@ -67,9 +64,9 @@ namespace AHP.BL.Models
             return res;
         }
 
-        public static Matrix IdentityMatrix(int n,int m)
+        public static Matrix IdentityMatrix(int n, int m)
         {
-            Matrix res = new Matrix(n,m);
+            Matrix res = new Matrix(n, m);
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < m; j++)
                     res[i, j] = i == j ? 1 : 0;
@@ -78,7 +75,8 @@ namespace AHP.BL.Models
 
         public static Vector operator *(Matrix a, Vector b)
         {
-            if (b.Length != a.N) throw new System.Exception("Different vector and matrix dimensions");
+            if (b.Length != a.M) throw new System.Exception("Different vector and matrix dimensions");
+
             Vector c = new Vector(b.Length);
             double temp;
             for (int i = 0; i < a.N; ++i)
@@ -90,24 +88,20 @@ namespace AHP.BL.Models
             return c;
         }
 
-
-       
-
         public static Matrix operator *(double a, Matrix b)
         {
-            Matrix c = new Matrix(b.N,b.M);
+            Matrix c = new Matrix(b.N, b.M);
             for (int i = 0; i < c.N; ++i)
                 for (int j = 0; j < c.M; ++j)
                     c[i, j] = a * b[i, j];
             return c;
         }
+
         public static Matrix operator *(Matrix a, Matrix b)
         {
-          
-            if (a.M != b.N)
-                throw new System.ArgumentException();
+            if (a.M != b.N) throw new RankException();
 
-            Matrix c = new Matrix(a.N,b.M);
+            Matrix c = new Matrix(a.N, b.M);
             for (int i = 0; i < a.N; ++i)
             {
                 for (int j = 0; j < b.M; ++j)
@@ -128,20 +122,20 @@ namespace AHP.BL.Models
 
         public static Matrix operator +(Matrix a, Matrix b)
         {
-            if((a.M != b.M)||(a.N != b.N))
-                throw new System.ArgumentException();
+            if ((a.M != b.M) || (a.N != b.N)) throw new RankException();
 
-            Matrix c = new Matrix(a.N,a.M);
+            Matrix c = new Matrix(a.N, a.M);
             for (int i = 0; i < c.N; ++i)
                 for (int j = 0; j < c.M; ++j)
                     c[i, j] = a[i, j] + b[i, j];
             return c;
         }
+
         public static Matrix operator -(Matrix a, Matrix b) => a + -b;
 
         public static Matrix operator -(Matrix a)
         {
-            Matrix c = new Matrix(a.N,a.M);
+            Matrix c = new Matrix(a.N, a.M);
             for (int i = 0; i < c.N; ++i)
                 for (int j = 0; j < c.M; ++j)
                     c[i, j] = -a[i, j];
@@ -157,10 +151,8 @@ namespace AHP.BL.Models
             return c;
         }
 
-
-
         public double this[int i, int j]
-        { 
+        {
             get { return A[i, j]; }
             set { A[i, j] = value; }
         }
