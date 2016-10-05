@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using static System.Math;
 
 namespace AHP.BL.Models
 {
@@ -15,15 +16,9 @@ namespace AHP.BL.Models
             for (int i = 0; i < x.Length; X[i] = x[i], ++i) ;
         }
 
-
-        /*          PROPERTIES           */
-
         public double[] X { set; get; }
         public int Length => X.Length;
-
-
-        /*          METHODS           */
-
+        
         public static double Sum(params double[] x)
         {
             double res = 0.0;
@@ -31,9 +26,15 @@ namespace AHP.BL.Models
             return res;
         }
 
-
-        /*          OPERATORS           */
-
+        public static double GeometricMean(Vector x)
+        {
+            double res = 1.0;
+            for (int i = 0; i < x.Length; ++i)
+            {
+                res *= x[i];
+            }
+            return Pow(res, 1.0 / x.Length);
+        }
 
         public double this[int i]
         {

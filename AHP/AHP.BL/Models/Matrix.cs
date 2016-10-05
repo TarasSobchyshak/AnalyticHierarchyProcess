@@ -10,8 +10,6 @@ namespace AHP.BL.Models
             A = new double[n, n];
         }
 
-        /*          PROPERTIES           */
-
         public double[,] A { get; set; }
         public int Dim => (int)Sqrt(A.Length);
 
@@ -145,6 +143,28 @@ namespace AHP.BL.Models
             return E;
         }
 
+        public Vector GetRow(int index)
+        {
+            if (index > Dim) throw new IndexOutOfRangeException();
+            double[] res = new double[Dim];
+            for (int i = 0; i < Dim; ++i)
+            {
+                res[i] = A[index, i];
+            }
+            return new Vector(res);
+        }
+
+        public Vector GetColumn(int index)
+        {
+            if (index > Dim) throw new IndexOutOfRangeException();
+            double[] res = new double[Dim];
+            for (int i = 0; i < Dim; ++i)
+            {
+                res[i] = A[i, index];
+            }
+            return new Vector(res);
+        }
+
         public static Matrix IdentityMatrix(int n)
         {
             Matrix res = new Matrix(n);
@@ -153,8 +173,6 @@ namespace AHP.BL.Models
                     res[i, j] = i == j ? 1 : 0;
             return res;
         }
-
-        /*          OPERATORS           */
 
         public static Vector operator *(Matrix a, Vector b)
         {
