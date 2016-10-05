@@ -160,7 +160,7 @@ namespace AHP.BL.Models
 
 
         public double this[int i, int j]
-        {
+        { 
             get { return A[i, j]; }
             set { A[i, j] = value; }
         }
