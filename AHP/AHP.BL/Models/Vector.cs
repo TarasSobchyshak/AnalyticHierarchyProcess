@@ -83,9 +83,9 @@ namespace AHP.BL.Models
         public static Matrix operator ^(Vector a, Vector b)
         {
             Matrix res = new Matrix(a.Length);
-            for (int i = 0; i < res.Dim; ++i)
+            for (int i = 0; i < res.N; ++i)
             {
-                for (int j = 0; j < res.Dim; ++j)
+                for (int j = 0; j < res.M; ++j)
                 {
                     res[i, j] = a[i] * b[j];
                 }
