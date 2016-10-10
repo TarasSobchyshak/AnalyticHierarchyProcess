@@ -1,6 +1,8 @@
-﻿namespace AHP.App
+﻿using AHP.BL.Models;
+
+namespace AHP.App
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : ObservableObject
     {
         //private int _myProperty;
 
