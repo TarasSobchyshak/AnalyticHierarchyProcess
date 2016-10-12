@@ -5,7 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
-        <DataGrid x:Name="dataGrid" HeadersVisibility="None" ColumnWidth="*" CellEditEnding="dataGrid_CellEditEnding" CurrentCellChanged="dataGrid_CurrentCellChanged" />
-    
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center"  HorizontalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <DataGrid x:Name="dataGrid"
+              HeadersVisibility="None"
+              ColumnWidth="*"
+              CellEditEnding="dataGrid_CellEditEnding"/>
 </UserControl>

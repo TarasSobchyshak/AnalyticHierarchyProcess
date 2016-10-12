@@ -39,7 +39,6 @@ namespace AHP.App.Controls
             dataGrid.SetBinding(DataGrid.ItemsSourceProperty, b);
 
             Matrix = IdentityMatrix(8);
-
         }
 
         public Matrix Matrix
@@ -89,8 +88,8 @@ namespace AHP.App.Controls
         private void MatrixToGrid()
         {
             dataGrid.CanUserAddRows = true;
-            DataTable Table = new DataTable();
-            for (int i = 0; i < Matrix.M; ++i) Table.Columns.Add("");
+            _table = new DataTable();
+            for (int i = 0; i < Matrix.M; ++i) { Table.Columns.Add(""); Table.Columns[i].DataType = typeof(double); } 
 
             for (int i = 0; i < Matrix.N; ++i)
             {
@@ -100,6 +99,17 @@ namespace AHP.App.Controls
             }
             dataGrid.ItemsSource = Table.DefaultView;
             dataGrid.CanUserAddRows = false;
+        }
+
+        private void GridToMatrix()
+        {
+            for (int i = 0; i < Table.Rows.Count; ++i)
+            {
+                for (int j = 0; j < Table.Columns.Count; ++j)
+                {
+                    Matrix[i, j] = (double)Table.Rows[i].ItemArray[j];
+                }
+            }
         }
 
         #region INPC
@@ -125,28 +135,9 @@ namespace AHP.App.Controls
         }
         #endregion
 
-        private int value;
-        private int n;
-        private int m;
         private void dataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            n = e.Row.GetIndex();
-            m = e.Column.DisplayIndex;
-        }
-
-        private void dataGrid_CurrentCellChanged(object sender, EventArgs e)
-        {
-            if (dataGrid.SelectedItem != null)
-            {
-                DataRowView dataRow = (DataRowView)dataGrid.SelectedItem;
-                int index = dataGrid.CurrentCell.Column.DisplayIndex;
-                string cellValue = dataRow.Row.ItemArray[index].ToString();
-
-                if (int.TryParse(cellValue, out value))
-                {
-                    Matrix[n, m] = value;
-                }
-            }
+            GridToMatrix();
         }
     }
 }
