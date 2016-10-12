@@ -6,7 +6,7 @@ namespace AHP.BL.Models
     {
         private int _n;
         private int _m;
-        public double[,] A { get; set; }
+        public double[,] _a;
 
         public Matrix(int n)
         {
@@ -32,7 +32,11 @@ namespace AHP.BL.Models
             get { return _m; }
             set { SetProperty(ref _m, value); }
         }
-
+        public double[,] A
+        {
+            get { return _a; }
+            set { SetProperty(ref _a, value); }
+        }
         public Vector GetRow(int index)
         {
             if (index > N) throw new IndexOutOfRangeException();

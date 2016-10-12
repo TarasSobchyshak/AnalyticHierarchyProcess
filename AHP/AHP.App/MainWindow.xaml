@@ -10,10 +10,13 @@
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
-    
+
     <Grid>
 
-        <controls:MatrixGrid/>
+        <StackPanel>
+            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty.A}" VerticalAlignment="Top"/>
+            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty.A}" VerticalAlignment="Top"/>
+        </StackPanel>
 
     </Grid>
 </Window>

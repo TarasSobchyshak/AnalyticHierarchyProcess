@@ -4,18 +4,18 @@ namespace AHP.App
 {
     public class MainWindowViewModel : ObservableObject
     {
-        //private int _myProperty;
-
-        //public int MyProperty
-        //{
-        //    get { return _myProperty; }
-        //    set { SetProperty(ref _myProperty, value); }
-        //}
-
         public MainWindowViewModel()
         {
+            MyProperty = Matrix.IdentityMatrix(5);
         }
 
-        
+        private Matrix _myProperty;
+
+        public Matrix MyProperty
+        {
+            get { return _myProperty; }
+            set { SetProperty(ref _myProperty, value); }
+        }
+
     }
 }
