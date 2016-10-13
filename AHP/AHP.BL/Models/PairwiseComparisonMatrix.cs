@@ -1,11 +1,12 @@
 ﻿using static AHP.BL.Models.Vector;
+using static AHP.BL.Models.Matrix;
 
 namespace AHP.BL.Models
 {
     public class PairwiseComparisonMatrix : ObservableObject
     {
         private Matrix _m;
-        private Vector _x;
+        private Matrix _x;
         private int _index;
         private int _level;
 
@@ -14,18 +15,18 @@ namespace AHP.BL.Models
             Index = index;
             Level = level;
             M = m;
-            _x = GetLocalPriorityVector(M);
-        }
+            RefreshLocalPriorityVector();
 
+        }
+        public Matrix X
+        {
+            get { return _x; }
+            set { SetProperty(ref _x, value); }
+        }
         public Matrix M
         {
             get { return _m; }
             set { SetProperty(ref _m, value); }
-        }
-        public Vector X
-        {
-            get { return _x; }
-            set { SetProperty(ref _x, value); }
         }
         public int Index
         {
@@ -44,26 +45,33 @@ namespace AHP.BL.Models
             {
                 M[i, j] = value;
                 RaisePropertyChanged(nameof(M));
+                RefreshLocalPriorityVector();
             }
         }
         public double this[int i]
         {
-            get { return _x[i]; }
+            get { return X[i, 1]; }
             set
             {
-                X[i] = value;
+                X[i, 1] = value;
                 RaisePropertyChanged(nameof(X));
             }
         }
 
         public static Vector GetLocalPriorityVector(Matrix a)
         {
-            double[] x = new double[a.M];
-            for(int i = 0; i < a.N; ++i)
+            double[] x = new double[a.N];
+            double m = GeometricMean(a);
+            for (int i = 0; i < a.N; ++i)
             {
-                x[i] = GeometricMean(a.GetRow(i));
+                x[i] = GeometricMean(a.GetRow(i)) / m;
             }
             return new Vector(x);
+        }
+
+        public void RefreshLocalPriorityVector()
+        {
+            X = new Matrix(GetLocalPriorityVector(M));
         }
     }
 }

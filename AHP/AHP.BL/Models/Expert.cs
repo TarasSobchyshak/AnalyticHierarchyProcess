@@ -5,6 +5,7 @@ namespace AHP.BL.Models
     public class Expert : ObservableObject
     {
         private string _name;
+        private string _imageKey;
         private ObservableCollection<PairwiseComparisonMatrix> _cpcm;
         private PairwiseComparisonMatrix _pcm;
         private double _weight;
@@ -15,12 +16,18 @@ namespace AHP.BL.Models
             _cpcm = cpcm;
             _pcm = pcm;
             _weight = weight;
+            _imageKey = "/Images/ImageDefault.png";
         }
 
         public string Name
         {
             get { return _name; }
             set { SetProperty(ref _name, value); }
+        }
+        public string ImageKey
+        {
+            get { return _imageKey; }
+            set { SetProperty(ref _imageKey, value); }
         }
 
         public PairwiseComparisonMatrix PCM

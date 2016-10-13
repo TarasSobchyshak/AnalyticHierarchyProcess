@@ -6,9 +6,12 @@
              xmlns:dg2d="clr-namespace:DataGrid2DLibrary;assembly=DataGrid2DLibrary"
              xmlns:local="clr-namespace:AHP.App.Controls"
              x:Name="this">
-
+    <UserControl.Resources>
+        <local:MatrixRoDouble2dArrayConverter x:Key="MatrixRoDouble2dArrayConverter"/>
+    </UserControl.Resources>
     <dg2d:DataGrid2D Name="dataGrid2D"
                      ColumnWidth="*"
+                     MinColumnWidth="50"
                      HeadersVisibility="None"
-                     ItemsSource2D="{Binding ElementName=this, Path=Matrix, Mode=TwoWay}"/>
+                     ItemsSource2D="{Binding ElementName=this, Path=Matrix, Mode=TwoWay, Converter={StaticResource MatrixRoDouble2dArrayConverter}}"/>
 </UserControl>

@@ -8,6 +8,13 @@ namespace AHP.BL.Models
         private int _m;
         public double[,] _a;
 
+        public Matrix()
+        {
+            N = 0;
+            M = 0;
+            A = null;
+        }
+
         public Matrix(int n)
         {
             N = n;
@@ -20,6 +27,20 @@ namespace AHP.BL.Models
             N = n;
             M = m;
             A = new double[_n, _m];
+        }
+
+        public Matrix(Vector x)
+        {
+            N = x.Length;
+            M = 1;
+            A = new double[N, M];
+            for (int i = 0; i < N; ++i) A[i, 0] = x[i];
+        }
+        public Matrix(Matrix a)
+        {
+            M = a.M;
+            N = a.N;
+            A = a.A;
         }
 
         public int N
@@ -35,13 +56,25 @@ namespace AHP.BL.Models
         public double[,] A
         {
             get { return _a; }
-            set { SetProperty(ref _a, value); }
+            set
+            {
+                if (value != null)
+                {
+                    N = value.GetLength(0);
+                    M = value.GetLength(1);
+                }
+                else
+                {
+                    N = M = 0;
+                }
+                SetProperty(ref _a, value);
+            }
         }
         public Vector GetRow(int index)
         {
-            if (index > N) throw new IndexOutOfRangeException();
-            double[] res = new double[N];
-            for (int i = 0; i < N; ++i)
+            if (index > N || index < 0) throw new IndexOutOfRangeException();
+            double[] res = new double[M];
+            for (int i = 0; i < M; ++i)
             {
                 res[i] = A[index, i];
             }
@@ -50,13 +83,23 @@ namespace AHP.BL.Models
 
         public Vector GetColumn(int index)
         {
-            if (index > M) throw new IndexOutOfRangeException();
-            double[] res = new double[M];
-            for (int i = 0; i < M; ++i)
+            if (index > M || index < 0) throw new IndexOutOfRangeException();
+            double[] res = new double[N];
+            for (int i = 0; i < N; ++i)
             {
                 res[i] = A[i, index];
             }
             return new Vector(res);
+        }
+
+        public static double GeometricMean(Matrix a)
+        {
+            double res = 0.0;
+            for (int i = 0; i < a.N; ++i)
+            {
+                res += Vector.GeometricMean(a.GetRow(i));
+            }
+            return res;
         }
 
         public static Matrix IdentityMatrix(int n)
@@ -146,7 +189,7 @@ namespace AHP.BL.Models
             return c;
         }
 
-        public static explicit operator Matrix(double[,] a)
+        public static implicit operator Matrix(double[,] a)
         {
             Matrix c = new Matrix(a.GetLength(0), a.GetLength(1));
             for (int i = 0; i < c.N; ++i)

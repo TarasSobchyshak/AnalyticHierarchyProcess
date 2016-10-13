@@ -6,7 +6,7 @@
         xmlns:controls="clr-namespace:AHP.App.Controls"
         xmlns:local="clr-namespace:AHP.App"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Analytic Hierarchy Process" Height="700" Width="800">
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
@@ -14,8 +14,9 @@
     <Grid>
 
         <StackPanel>
-            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty.A}" VerticalAlignment="Top"/>
-            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty.A}" VerticalAlignment="Top"/>
+            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty}" VerticalAlignment="Top"/>
+            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty}" VerticalAlignment="Top"/>
+            <controls:ExpertControl Margin="10" Expert="{Binding Expert}" VerticalAlignment="Top"/>
         </StackPanel>
 
     </Grid>
