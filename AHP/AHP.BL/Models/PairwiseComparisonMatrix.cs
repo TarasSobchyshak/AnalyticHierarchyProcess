@@ -1,5 +1,7 @@
 ﻿using static AHP.BL.Models.Vector;
 using static AHP.BL.Models.Matrix;
+using System.Windows.Input;
+using System;
 
 namespace AHP.BL.Models
 {
@@ -9,6 +11,10 @@ namespace AHP.BL.Models
         private Matrix _x;
         private int _level;
 
+        public ICommand RefVector
+        {
+            get { return new DelegateCommand(new Action(() => RefreshLocalPriorityVector())); }
+        }
         public PairwiseComparisonMatrix(Matrix m, int level)
         {
             Level = level;

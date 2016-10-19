@@ -34,7 +34,7 @@ namespace AHP.App
                 tree.Goal.PCM = new PairwiseComparisonMatrix(new Matrix(tree.Criteria.Count), tree.Goal.Level);
                 for (int i = 0; i < tree.Criteria.Count; ++i)
                 {
-                    tree.Criteria[i].PCM = new PairwiseComparisonMatrix(new Matrix(tree.Alternatives.Count), tree.Goal.Level);
+                    tree.Criteria[i].PCM = new PairwiseComparisonMatrix(Matrix.IdentityMatrix(tree.Alternatives.Count), tree.Goal.Level);
                 }
 
                 return tree;
