@@ -10,12 +10,12 @@ namespace AHP.BL.Models
         private ObservableCollection<Criterion> _criteria;
         private ObservableCollection<Alternative> _alternatives;
 
-        public Tree(Goal goal = null, IEnumerable<Criterion> criteria = null, IEnumerable<Alternative> alternatives = null)
-        {
-            _goal = goal;
-            _criteria = new ObservableCollection<Criterion>(criteria);
-            _alternatives = new ObservableCollection<Alternative>(alternatives);
-        }
+		public Tree(Goal goal = null, IEnumerable<Criterion> criteria = null, IEnumerable<Alternative> alternatives = null)
+		{
+			_goal = goal;
+			_criteria = criteria == null ? new ObservableCollection<Criterion>() : new ObservableCollection<Criterion>(criteria);
+			_alternatives = alternatives == null ? new ObservableCollection<Alternative>() : new ObservableCollection<Alternative>(alternatives);
+		}
 
         public int AlternativesLevel => Criteria.Max(x => x.Level) + 1;
 
