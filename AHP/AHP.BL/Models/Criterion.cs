@@ -2,18 +2,12 @@
 
 namespace AHP.BL.Models
 {
-    public class Сriterion : ObservableObject, IVertex
+    public class Criterion : ObservableObject, IVertex
     {
         private int _level;
         private string _value;
         private double _weight;
-
-        public Сriterion(string value, int level = 1, double weight = 0.0)
-        {
-            _level = level;
-            _weight = weight;
-            _value = value;
-        }
+        private PairwiseComparisonMatrix _pcm;
 
         public int Level
         {
@@ -31,6 +25,12 @@ namespace AHP.BL.Models
         {
             get { return _weight; }
             set { SetProperty(ref _weight, value); }
+        }
+
+        public PairwiseComparisonMatrix PCM
+        {
+            get { return _pcm; }
+            set { SetProperty(ref _pcm, value); }
         }
     }
 }

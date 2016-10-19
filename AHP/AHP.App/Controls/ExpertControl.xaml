@@ -21,9 +21,11 @@
                 </StackPanel>
             </StackPanel>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
-                    <ItemsControl ItemsSource="{Binding ElementName=this, Path=Expert.CPCM}">
+                <!--тут треба відобразити два zalupa datatemplate для criteria, alternatives та подібний для goal, але то не колекція -->
+                <ItemsControl ItemsSource="{Binding ElementName=this, Path=Expert.CPCM}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:Name="zalupa">
+                                <!--tagert type не вказуй, але юзай проперты з інтерфейсу IVertex, інтерфейс не можна просто як таргеттайп, абстрактний клас тоже -->
                                 <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Stretch">
                                     <local:MatrixGrid Matrix="{Binding Path=M}" Margin="5"/>
                                     <local:MatrixGrid Matrix="{Binding Path=X}" Margin="5"/>

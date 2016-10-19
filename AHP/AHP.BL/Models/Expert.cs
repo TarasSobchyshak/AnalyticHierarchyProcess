@@ -1,20 +1,16 @@
-﻿using System.Collections.ObjectModel;
-
-namespace AHP.BL.Models
+﻿namespace AHP.BL.Models
 {
     public class Expert : ObservableObject
     {
         private string _name;
-        private string _imageKey;
-        private ObservableCollection<PairwiseComparisonMatrix> _cpcm;
-        private PairwiseComparisonMatrix _pcm;
         private double _weight;
+        private string _imageKey;
+        private PairwiseComparisonMatrix _pcm;
+        private Tree _tree;
 
-        public Expert(string name, ObservableCollection<PairwiseComparisonMatrix> cpcm, PairwiseComparisonMatrix pcm, double weight = 1.0)
+        public Expert(string name, double weight = 1.0)
         {
             _name = name;
-            _cpcm = cpcm;
-            _pcm = pcm;
             _weight = weight;
             _imageKey = "/Images/ImageDefault.png";
         }
@@ -35,15 +31,17 @@ namespace AHP.BL.Models
             get { return _pcm; }
             set { SetProperty(ref _pcm, value); }
         }
+
+        public Tree Tree
+        {
+            get { return _tree; }
+            set { SetProperty(ref _tree, value); }
+        }
+
         public double Weight
         {
             get { return _weight; }
             set { SetProperty(ref _weight, value); }
-        }
-        public ObservableCollection<PairwiseComparisonMatrix> CPCM
-        {
-            get { return _cpcm; }
-            set { SetProperty(ref _cpcm, value); }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace AHP.App
         private string _layoutAlgorithmType;
         private Graph _graph;
         private List<string> layoutAlgorithmTypes;
-        private Expert _expert;
+        private ObservableCollection<Expert> _experts;
 
         public Graph Graph
         {
@@ -22,10 +22,10 @@ namespace AHP.App
             set { SetProperty(ref _graph, value); }
         }
 
-        public Expert Expert
+        public ObservableCollection<Expert> Experts
         {
-            get { return _expert; }
-            set { SetProperty(ref _expert, value); }
+            get { return _experts; }
+            set { SetProperty(ref _experts, value); }
         }
 
         public bool IsGraphHidden
@@ -51,39 +51,21 @@ namespace AHP.App
             layoutAlgorithmTypes = new List<string>();
             Graph = new Graph(true);
 
-            var goal = new Goal("Goal");
-            var criteria = new ObservableCollection<Сriterion>();
-            var alternatives = new ObservableCollection<Alternative>();
+            Graph.AddVertex(App.Tree.Goal);
+            Graph.AddVertexRange(App.Tree.Criteria);
+            Graph.AddVertexRange(App.Tree.Alternatives);
 
-            criteria.Add(new Сriterion("Кіт"));
-            criteria.Add(new Сriterion("Пес"));
-            criteria.Add(new Сriterion("Кіт-пес"));
-            criteria.Add(new Сriterion("Супер критерій0", 2, 0.8));
-            criteria.Add(new Сriterion("Не супер критерій1", 2, 0.2));
-            criteria.Add(new Сriterion("Не супер критерій2", 3, 1));
-            criteria.Add(new Сriterion("Не супер критерій3", 3, 1));
-            criteria.Add(new Сriterion("Не супер критерій4", 3, 1));
-            criteria.Add(new Сriterion("Не супер критерій5", 3, 1));
+            AddNewGraphEdges(App.Tree.Goal, App.Tree.Criteria.Where(x => x.Level == 1));
+            AddNewGraphEdges(App.Tree.Criteria.Where(x => x.Level == App.Tree.AlternativesLevel - 1), App.Tree.Alternatives);
 
-            int alternativeLevel = criteria.Max(x => x.Level) + 1;
+            // Join criteria
 
-            alternatives.Add(new Alternative("Супер альтернатива", alternativeLevel));
-            alternatives.Add(new Alternative("Риба", alternativeLevel));
-            alternatives.Add(new Alternative("Монітор", alternativeLevel));
-            alternatives.Add(new Alternative("хз", alternativeLevel));
-
-            Graph.AddVertex(goal);
-            Graph.AddVertexRange(criteria);
-            Graph.AddVertexRange(alternatives);
-
-            AddNewGraphEdges(goal, criteria.Where(x => x.Level == 1));
-            AddNewGraphEdges(criteria.Where(x => x.Level == alternativeLevel - 1), alternatives);
 
             //var splitted = criteria
             //    .GroupBy(x => x)
             //    .SelectMany(x => x
             //                        .OrderBy(y => y.Value)
-            //                        .Select((y, i) => new Сriterion(y.Value, y.Level, y.Weight))
+            //                        .Select((y, i) => new Сriterion(y.Value, y.Level -i, y.Weight))
             //                        .GroupBy(y => y.Level)
             //                        .Select(y => y.Select(z => z))
             //    );

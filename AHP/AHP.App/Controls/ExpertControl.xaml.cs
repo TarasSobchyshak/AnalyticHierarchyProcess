@@ -22,7 +22,7 @@ namespace AHP.App.Controls
         }
 
         public static readonly DependencyProperty ExpertProperty = DependencyProperty<ExpertControl>
-            .Register(x => x.Expert, new Expert("Unnamed", null, null, 0), x => x.OnExpertPropertyChanged);
+            .Register(x => x.Expert, new Expert("Unnamed"), x => x.OnExpertPropertyChanged);
 
         private void OnExpertPropertyChanged(DependencyPropertyChangedEventArgs<Expert> e)
         {

@@ -80,7 +80,8 @@
     <Compile Include="Models\Goal.cs" />
     <Compile Include="Models\ObservableObject.cs" />
     <Compile Include="Models\PairwiseComparisonMatrix.cs" />
-    <Compile Include="Models\Сriterion.cs" />
+    <Compile Include="Models\Tree.cs" />
+    <Compile Include="Models\Criterion.cs" />
     <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

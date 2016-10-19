@@ -6,13 +6,8 @@ namespace AHP.BL.Models
     {
         private string _value;
         private double _weight;
-
-        public Goal(string value)
-        {
-            _value = value;
-            Weight = 1.0;
-        }
-
+        private PairwiseComparisonMatrix _pcm;
+        
         public int Level => 0;
 
         public string Value
@@ -25,6 +20,11 @@ namespace AHP.BL.Models
         {
             get { return _weight; }
             set { SetProperty(ref _weight, value); }
+        }
+        public PairwiseComparisonMatrix PCM
+        {
+            get { return _pcm; }
+            set { SetProperty(ref _pcm, value); }
         }
     }
 }
