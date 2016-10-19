@@ -2,24 +2,18 @@
 
 namespace AHP.BL.Models
 {
-    public class Alternative : ObservableObject, IVertex
+    public class Goal : ObservableObject, IVertex
     {
-        private int _level;
         private string _value;
         private double _weight;
 
-        public Alternative(string value, int level, double weight = 0.0)
+        public Goal(string value)
         {
-            _level = level;
-            _weight = weight;
             _value = value;
+            Weight = 1.0;
         }
-        
-        public int Level
-        {
-            get { return _level; }
-            set { SetProperty(ref _level, value); }
-        }
+
+        public int Level => 0;
 
         public string Value
         {

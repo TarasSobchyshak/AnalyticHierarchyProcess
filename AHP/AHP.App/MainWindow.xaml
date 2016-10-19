@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:AHP.App.Controls"
+        xmlns:zoom="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"  
+        xmlns:graphmodels="clr-namespace:AHP.BL.GraphModels;assembly=AHP.BL"
         xmlns:local="clr-namespace:AHP.App"
         mc:Ignorable="d"
         Title="Analytic Hierarchy Process" Height="700" Width="800">
@@ -11,13 +13,97 @@
         <local:MainWindowViewModel/>
     </Window.DataContext>
 
-    <Grid>
 
-        <StackPanel>
-            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty}" VerticalAlignment="Top"/>
-            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty}" VerticalAlignment="Top"/>
-            <controls:ExpertControl Margin="10" Expert="{Binding Expert}" VerticalAlignment="Top"/>
-        </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition>
+                <ColumnDefinition.Style>
+                    <Style TargetType="{x:Type ColumnDefinition}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsGraphHidden}" Value="True">
+                                <Setter Property="Width" Value="0" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsGraphHidden}" Value="False">
+                                <Setter Property="Width" Value="Auto" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+            <ColumnDefinition>
+                <ColumnDefinition.Style>
+                    <Style TargetType="{x:Type ColumnDefinition}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsGraphHidden}" Value="True">
+                                <Setter Property="Width" Value="0" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsGraphHidden}" Value="False">
+                                <Setter Property="Width" Value="*" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" >
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock>Other things</TextBlock>
+                <CheckBox Content="Is graph hidden" IsChecked="{Binding IsGraphHidden}"/>
+            </StackPanel>
+        </Grid>
+
+
+        <GridSplitter Grid.Column="1"
+                      HorizontalAlignment="Stretch" 
+                      VerticalAlignment="Stretch" 
+                      Width="4" 
+                      BorderThickness="1" 
+                      BorderBrush="Blue"
+                      ResizeBehavior="PreviousAndNext"/>
+
+        <Grid Grid.Column="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Vertical" Grid.Row="0" >
+                <StackPanel Orientation="Horizontal" Background="Black"
+                        HorizontalAlignment="Stretch" Margin="0">
+                    <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
+                        FontSize="10" FontFamily="Verdana" FontWeight="Bold" Margin="0,0,0,0"  
+                        Content="Layout Type"/>
+                    <ComboBox ItemsSource="{Binding LayoutAlgorithmTypes}"
+                          SelectedItem="{Binding Path=LayoutAlgorithmType, Mode=TwoWay}"
+                          Width="150" Height="25" Margin="5" />
+                </StackPanel>
+            </StackPanel>
+
+            <zoom:ZoomControl Grid.Row="1" Zoom="0.5" ZoomBoxOpacity="0.2" Background="#ff656565">
+                <graphmodels:GraphLayout x:Name="graphLayout" Margin="10"
+						Graph="{Binding Path=Graph}"
+						LayoutAlgorithmType="{Binding Path=LayoutAlgorithmType, Mode=OneWay}"
+						OverlapRemovalAlgorithmType="FSA"
+						HighlightAlgorithmType="Simple" />
+            </zoom:ZoomControl>
+        </Grid>
 
     </Grid>
+
+    <!--<Grid>
+
+        <StackPanel>
+            -->
+    <!--<controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty}" VerticalAlignment="Top"/>
+            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty}" VerticalAlignment="Top"/>
+            <controls:ExpertControl Margin="10" Expert="{Binding Expert}" VerticalAlignment="Top"/>-->
+    <!--
+            
+            
+        </StackPanel>
+
+    </Grid>-->
 </Window>

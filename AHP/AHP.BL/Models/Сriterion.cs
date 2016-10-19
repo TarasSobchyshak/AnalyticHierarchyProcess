@@ -1,28 +1,32 @@
-﻿namespace AHP.BL.Models
+﻿using AHP.BL.Interfaces;
+
+namespace AHP.BL.Models
 {
-    public class Сriterion : ObservableObject
+    public class Сriterion : ObservableObject, IVertex
     {
-        private int _index;
         private int _level;
+        private string _value;
         private double _weight;
 
-        public Сriterion(int index, int level, double weight)
+        public Сriterion(string value, int level = 1, double weight = 0.0)
         {
-            _index = index;
             _level = level;
             _weight = weight;
+            _value = value;
         }
 
-        public int Index
-        {
-            get { return _index; }
-            set { SetProperty(ref _index, value); }
-        }
         public int Level
         {
             get { return _level; }
             set { SetProperty(ref _level, value); }
         }
+
+        public string Value
+        {
+            get { return _value; }
+            set { SetProperty(ref _value, value); }
+        }
+
         public double Weight
         {
             get { return _weight; }
