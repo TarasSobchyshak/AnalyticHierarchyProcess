@@ -16,24 +16,20 @@
             <StackPanel Grid.Column="0">
                 <Image Source="{Binding Expert.ImageKey}" Height="250" Width="250" Margin="5"/>
                 <StackPanel>
-                    <TextBlock Text="{Binding Path=Expert.Name, StringFormat='{}Name: {0}'}" Margin="5,0"/>
-                    <TextBlock Text="{Binding Path=Expert.Weight, StringFormat='{}Weight: {0:P2}'}"  Margin="5,0"/>
+                    <TextBlock Text="{Binding Path=Expert.Name, StringFormat='{}Name: {0}'}" FontSize="14" Margin="5,0"/>
+                    <TextBlock Text="{Binding Path=Expert.Weight, StringFormat='{}Weight: {0:P2}'}" FontSize="14" Margin="5,0"/>
                 </StackPanel>
             </StackPanel>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
-                <!--тут треба відобразити два zalupa datatemplate для criteria, alternatives та подібний для goal, але то не колекція -->
-                <ItemsControl ItemsSource="{Binding ElementName=this, Path=Expert.CPCM}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:Name="zalupa">
-                                <!--tagert type не вказуй, але юзай проперты з інтерфейсу IVertex, інтерфейс не можна просто як таргеттайп, абстрактний клас тоже -->
-                                <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                    <local:MatrixGrid Matrix="{Binding Path=M}" Margin="5"/>
-                                    <local:MatrixGrid Matrix="{Binding Path=X}" Margin="5"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-            </ScrollViewer>
+
+
+            <StackPanel Grid.Column="1">
+                <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <local:MatrixGrid Matrix="{Binding Path=M}" Margin="5"/>
+                    <local:MatrixGrid Matrix="{Binding Path=X}" Margin="5"/>
+                </StackPanel>
+                <local:MatrixGrid Matrix="{Binding ElementName=this, Path=Expert.PCM.M}" Margin="5"/>
+                <local:MatrixGrid Matrix="{Binding ElementName=this, Path=Expert.PCM.X}" Margin="5"/>
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>

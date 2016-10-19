@@ -7,12 +7,10 @@ namespace AHP.BL.Models
     {
         private Matrix _m;
         private Matrix _x;
-        private int _index;
         private int _level;
 
-        public PairwiseComparisonMatrix(Matrix m, int index, int level)
+        public PairwiseComparisonMatrix(Matrix m, int level)
         {
-            Index = index;
             Level = level;
             M = m;
             RefreshLocalPriorityVector();
@@ -27,11 +25,6 @@ namespace AHP.BL.Models
         {
             get { return _m; }
             set { SetProperty(ref _m, value); }
-        }
-        public int Index
-        {
-            get { return _index; }
-            set { SetProperty(ref _index, value); }
         }
         public int Level
         {

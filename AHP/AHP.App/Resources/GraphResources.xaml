@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:graphsharp="clr-namespace:GraphSharp.Controls;assembly=GraphSharp.Controls"
                     xmlns:local="clr-namespace:AHP.App.Resources"
-                    xmlns:graphmodels="clr-namespace:AHP.BL.GraphModels;assembly=AHP.BL"
-                    xmlns:qweqw="clr-namespace:AHP.BL.Interfaces;assembly=AHP.BL">
+                    xmlns:controls="clr-namespace:AHP.App.Controls"
+                    xmlns:graphmodels="clr-namespace:AHP.BL.GraphModels;assembly=AHP.BL">
 
     <Style TargetType="graphsharp:VertexControl">
         <Setter Property="Template">
@@ -19,11 +19,16 @@
 
                             <ContentPresenter Content="{TemplateBinding Vertex}" >
                                 <ContentPresenter.ContentTemplate>
-                                    <DataTemplate >
+                                    <DataTemplate>
                                         <StackPanel Orientation="Vertical" Margin="5">
-                                            <TextBlock Text="{Binding Value}" Foreground="White" />
-                                            <TextBlock Text="{Binding Weight}" Foreground="White" />
-                                            <TextBlock Text="{Binding Level}" Foreground="White" />
+                                            <TextBlock Text="{Binding Value, StringFormat='{}Value: {0}'}" Foreground="White" FontSize="14" Margin="5,0"/>
+                                            <TextBlock Text="{Binding Weight, StringFormat='{}Weight: {0:P2}'}" Foreground="White" FontSize="14" Margin="5,0"/>
+                                            <TextBlock Text="{Binding Level, StringFormat='{}Level: {0}'}" Foreground="White" FontSize="14" Margin="5,0"/>
+
+                                            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                <controls:MatrixGrid Matrix="{Binding Path=PCM.M}" Margin="5"/>
+                                                <controls:MatrixGrid Matrix="{Binding Path=PCM.X}" Margin="5"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ContentPresenter.ContentTemplate>
@@ -55,5 +60,5 @@
 
     <Style x:Key="ShowHideButtonStyle" TargetType="Button">
     </Style>
-    
+
 </ResourceDictionary>

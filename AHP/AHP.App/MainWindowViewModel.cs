@@ -50,13 +50,20 @@ namespace AHP.App
         {
             layoutAlgorithmTypes = new List<string>();
             Graph = new Graph(true);
+            Experts = new ObservableCollection<Expert>();
+            Experts.Add(new Expert("Taras"));
 
-            Graph.AddVertex(App.Tree.Goal);
-            Graph.AddVertexRange(App.Tree.Criteria);
-            Graph.AddVertexRange(App.Tree.Alternatives);
+            foreach (var x in Experts)
+            {
+                x.Tree = App.Tree;
+            }
 
-            AddNewGraphEdges(App.Tree.Goal, App.Tree.Criteria.Where(x => x.Level == 1));
-            AddNewGraphEdges(App.Tree.Criteria.Where(x => x.Level == App.Tree.AlternativesLevel - 1), App.Tree.Alternatives);
+            Graph.AddVertex(Experts[0].Tree.Goal); // replace Experts[0] with selectedExpert.Tree (from combobox) in private method
+            Graph.AddVertexRange(Experts[0].Tree.Criteria);
+            Graph.AddVertexRange(Experts[0].Tree.Alternatives);
+
+            AddNewGraphEdges(Experts[0].Tree.Goal, Experts[0].Tree.Criteria.Where(x => x.Level == 1));
+            AddNewGraphEdges(Experts[0].Tree.Criteria.Where(x => x.Level == Experts[0].Tree.AlternativesLevel - 1), Experts[0].Tree.Alternatives);
 
             // Join criteria
 

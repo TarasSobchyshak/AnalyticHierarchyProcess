@@ -31,6 +31,12 @@ namespace AHP.App
                 tree.Alternatives.Add(new Alternative() { Value = "Alternative 3", Level = tree.AlternativesLevel });
                 tree.Alternatives.Add(new Alternative() { Value = "Alternative 4", Level = tree.AlternativesLevel });
 
+                tree.Goal.PCM = new PairwiseComparisonMatrix(new Matrix(tree.Criteria.Count), tree.Goal.Level);
+                for (int i = 0; i < tree.Criteria.Count; ++i)
+                {
+                    tree.Criteria[i].PCM = new PairwiseComparisonMatrix(new Matrix(tree.Alternatives.Count), tree.Goal.Level);
+                }
+
                 return tree;
             }
         }
