@@ -10,6 +10,8 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+!Libs/
+!bin/Debug/DataGrid2DLibrary.dll
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

@@ -37,7 +37,7 @@
   <ItemGroup>
     <Reference Include="DataGrid2DLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\DataGrid2DLibrary.dll</HintPath>
+      <HintPath>..\Libs\DataGrid2DLibrary.dll</HintPath>
     </Reference>
     <Reference Include="GraphSharp, Version=1.0.2.0, Culture=neutral, PublicKeyToken=f9c24778325a6b82, processorArchitecture=MSIL">
       <HintPath>..\packages\GraphSharp.1.1.0.0\lib\net40\GraphSharp.dll</HintPath>
