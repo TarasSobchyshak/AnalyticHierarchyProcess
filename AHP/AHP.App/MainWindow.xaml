@@ -48,10 +48,19 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" >
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                <TextBlock>Other things</TextBlock>
-                <CheckBox Content="Is graph hidden" IsChecked="{Binding IsGraphHidden}"/>
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid HorizontalAlignment="Center">
+                    <CheckBox Content="Is graph hidden" IsChecked="{Binding IsGraphHidden}"/>
+                </Grid>
+                <Grid>
+                    <ComboBox ItemsSource="{Binding Path=Experts}" SelectedIndex="{Binding Path=SelectedExpert, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
             </StackPanel>
         </Grid>
 

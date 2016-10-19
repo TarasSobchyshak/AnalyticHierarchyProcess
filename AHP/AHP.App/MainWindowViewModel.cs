@@ -15,6 +15,7 @@ namespace AHP.App
         private Graph _graph;
         private List<string> layoutAlgorithmTypes;
         private ObservableCollection<Expert> _experts;
+        private Expert _selectedExpert;
 
         public Graph Graph
         {
@@ -26,6 +27,12 @@ namespace AHP.App
         {
             get { return _experts; }
             set { SetProperty(ref _experts, value); }
+        }
+
+        public Expert SelectedExpert
+        {
+            get { return _selectedExpert; }
+            set { SetProperty(ref _selectedExpert, value); }
         }
 
         public bool IsGraphHidden
@@ -58,37 +65,19 @@ namespace AHP.App
                 x.Tree = App.Tree;
             }
 
-            Graph.AddVertex(Experts[0].Tree.Goal); // replace Experts[0] with selectedExpert.Tree (from combobox) in private method
-            Graph.AddVertexRange(Experts[0].Tree.Criteria);
-            Graph.AddVertexRange(Experts[0].Tree.Alternatives);
+            SelectedExpert = Experts[0];
 
-            AddNewGraphEdges(Experts[0].Tree.Goal, Experts[0].Tree.Criteria.Where(x => x.Level == 1));
-            AddNewGraphEdges(Experts[0].Tree.Criteria.Where(x => x.Level == Experts[0].Tree.AlternativesLevel - 1), Experts[0].Tree.Alternatives);
+            Graph.AddVertex(SelectedExpert.Tree.Goal); // replace SelectedExpert with selectedExpert.Tree (from combobox) in private method
+            Graph.AddVertexRange(SelectedExpert.Tree.Criteria);
+            Graph.AddVertexRange(SelectedExpert.Tree.Alternatives);
 
-            for (int i = 1; i < Experts[0].Tree.AlternativesLevel - 1; ++i)
+            AddNewGraphEdges(SelectedExpert.Tree.Goal, SelectedExpert.Tree.Criteria.Where(x => x.Level == 1));
+            AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == SelectedExpert.Tree.AlternativesLevel - 1), SelectedExpert.Tree.Alternatives);
+
+            for (int i = 1; i < SelectedExpert.Tree.AlternativesLevel - 1; ++i)
             {
-                AddNewGraphEdges(Experts[0].Tree.Criteria.Where(x => x.Level == i), Experts[0].Tree.Criteria.Where(x => x.Level == i + 1));
+                AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == i), SelectedExpert.Tree.Criteria.Where(x => x.Level == i + 1));
             }
-
-            // Join criteria
-
-
-            //var splitted = criteria
-            //    .GroupBy(x => x)
-            //    .SelectMany(x => x
-            //                        .OrderBy(y => y.Value)
-            //                        .Select((y, i) => new Сriterion(y.Value, y.Level -i, y.Weight))
-            //                        .GroupBy(y => y.Level)
-            //                        .Select(y => y.Select(z => z))
-            //    );
-            //int n = splitted.Count() - 1;
-            //for (int i = 0; i < n; ++i)
-            //{
-            //    var a = splitted.ElementAt(i);
-            //    var b = splitted.ElementAt(i + 1);
-            //    AddNewGraphEdges(a, b);
-            //}
-
 
             //Add Layout Algorithm Types
             layoutAlgorithmTypes.Add("BoundedFR");
@@ -162,48 +151,3 @@ namespace AHP.App
         #endregion
     }
 }
-
-
-
-
-
-
-//MyProperty = Matrix.IdentityMatrix(5);
-//Expert = new Expert("Shaurma",
-//                    new System.Collections.ObjectModel.ObservableCollection<PairwiseComparisonMatrix>(
-//                        new List<PairwiseComparisonMatrix>()
-//                        {
-//                            new PairwiseComparisonMatrix(new BL.Models.Matrix() { A = new double[,]
-//                                                                                    {
-//                                                                                        {2,1,1,1 },
-//                                                                                        {1,1,1,1 },
-//                                                                                        {1,1,1,1 }
-//                                                                                    }
-//                                                                                },
-//                                                         1,
-//                                                         2),
-//                            new PairwiseComparisonMatrix(new BL.Models.Matrix() { A = new double[,]
-//                                                                                    {
-//                                                                                        {212,17,91,1 },
-//                                                                                        {21,17,16,1 },
-//                                                                                        {21,17,16,1 },
-//                                                                                        {21,17,16,1 },
-//                                                                                        {21,17,16,1 },
-//                                                                                        {51,51,41,1 }
-//                                                                                    }
-//                                                                                },
-//                                                         1,
-//                                                         1),
-//                            new PairwiseComparisonMatrix(new BL.Models.Matrix() { A = new double[,]
-//                                                                                    {
-//                                                                                        {2,2,2,2,1,1,13 },
-//                                                                                        {1,34,76,1,56,1,1 },
-//                                                                                        {23,65,1,1,871,41,1 }
-//                                                                                    }
-//                                                                                },
-//                                                         2,
-//                                                         1),
-
-//                        }),
-//                    new PairwiseComparisonMatrix(BL.Models.Matrix.IdentityMatrix(7), 1, 1),
-//                    0.74);
