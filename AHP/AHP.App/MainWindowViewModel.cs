@@ -65,6 +65,11 @@ namespace AHP.App
             AddNewGraphEdges(Experts[0].Tree.Goal, Experts[0].Tree.Criteria.Where(x => x.Level == 1));
             AddNewGraphEdges(Experts[0].Tree.Criteria.Where(x => x.Level == Experts[0].Tree.AlternativesLevel - 1), Experts[0].Tree.Alternatives);
 
+            for (int i = 1; i < Experts[0].Tree.AlternativesLevel - 1; ++i)
+            {
+                AddNewGraphEdges(Experts[0].Tree.Criteria.Where(x => x.Level == i), Experts[0].Tree.Criteria.Where(x => x.Level == i + 1));
+            }
+
             // Join criteria
 
 
