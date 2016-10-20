@@ -49,8 +49,17 @@ namespace AHP.App
 
         public static void SaveTree(string key, Tree tree)
         {
-            // iso storage 
-        }
+			var settings = new Dictionary<string, object>();
+			settings.Add(key, JsonConvert.SerializeObject(tree));
+			BinaryFormatter formatter = new BinaryFormatter();
+			var store = IsolatedStorageFile.GetUserStoreForAssembly();
+
+			// Save
+			using (var stream = store.OpenFile("settings.cfg", FileMode.OpenOrCreate, FileAccess.Write))
+			{
+				formatter.Serialize(stream, settings);
+			}
+		}
 
         public static void SaveExpert(Expert expert)
         {
@@ -70,9 +79,24 @@ namespace AHP.App
 
         public static Tree LoadTree(string key)
         {
-            // iso storage 
-            return null;
-        }
+			var settings = new Dictionary<string, object>();
+			BinaryFormatter formatter = new BinaryFormatter();
+			var store = IsolatedStorageFile.GetUserStoreForAssembly();
+			// Load
+			using (var stream = store.OpenFile("settings.cfg", FileMode.OpenOrCreate, FileAccess.Read))
+			{
+				var x = formatter.Deserialize(stream);
+				settings = (Dictionary<string, object>)x;
+			}
+			try
+			{
+				return JsonConvert.DeserializeObject<Tree>((string)settings[key]);
+			}
+			catch (Exception ex)
+			{
+				return null;
+			}
+		}
 
         public static Expert LoadExpert(string key)
         {
