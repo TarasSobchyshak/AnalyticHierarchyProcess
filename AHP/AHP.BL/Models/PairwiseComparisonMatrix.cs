@@ -2,6 +2,7 @@
 using static AHP.BL.Models.Matrix;
 using System.Windows.Input;
 using System;
+using Newtonsoft.Json;
 
 namespace AHP.BL.Models
 {
@@ -11,6 +12,7 @@ namespace AHP.BL.Models
         private Matrix _x;
         private int _level;
 
+		[JsonIgnore]
         public ICommand RefVector
         {
             get { return new DelegateCommand(new Action(() => RefreshLocalPriorityVector())); }

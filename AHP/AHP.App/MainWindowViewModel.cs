@@ -192,10 +192,11 @@ namespace AHP.App
 
         private void LoadExperts()
         {
-            foreach (var x in Experts)
-            {
-                App.LoadExpert(SelectedExpert.Name);
-            }
+			var x= App.LoadExperts();
+			foreach(var exp in x)
+			{
+				Experts.Add(exp);
+			}
         }
 
         #endregion

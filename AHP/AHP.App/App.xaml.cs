@@ -1,5 +1,11 @@
 ﻿using AHP.BL.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Windows;
 
 namespace AHP.App
@@ -48,9 +54,18 @@ namespace AHP.App
 
         public static void SaveExpert(Expert expert)
         {
-            // iso storage 
             string key = expert.Name;
-        }
+			var settings = new Dictionary<string, object>();
+			settings.Add(key, JsonConvert.SerializeObject(expert));
+			BinaryFormatter formatter = new BinaryFormatter();
+			var store = IsolatedStorageFile.GetUserStoreForAssembly();
+
+			// Save
+			using (var stream = store.OpenFile("settings.cfg", FileMode.OpenOrCreate, FileAccess.Write))
+			{
+				formatter.Serialize(stream, settings);
+			}
+		}
 
 
         public static Tree LoadTree(string key)
@@ -61,14 +76,45 @@ namespace AHP.App
 
         public static Expert LoadExpert(string key)
         {
-            // iso storage 
-            return null;
+			var settings = new Dictionary<string, object>();
+			BinaryFormatter formatter = new BinaryFormatter();
+			var store = IsolatedStorageFile.GetUserStoreForAssembly();
+			// Load
+			using (var stream = store.OpenFile("settings.cfg", FileMode.OpenOrCreate, FileAccess.Read))
+			{
+				var x = formatter.Deserialize(stream);
+				settings = (Dictionary<string, object>)x;
+			}
+			try
+			{
+				return JsonConvert.DeserializeObject<Expert>((string)settings[key]);
+			}
+			catch (Exception ex)
+			{
+				return null;
+			}
         }
 
-        public static IEnumerable<Expert> LoadExperts(string[] keys)
+        public static IEnumerable<Expert> LoadExperts()
         {
-            // iso storage 
-            return null;
-        }
+			var settings = new Dictionary<string, object>();
+			BinaryFormatter formatter = new BinaryFormatter();
+			var store = IsolatedStorageFile.GetUserStoreForAssembly();
+			// Load
+			using (var stream = store.OpenFile("settings.cfg", FileMode.OpenOrCreate, FileAccess.Read))
+			{
+				var x = formatter.Deserialize(stream);
+				settings = (Dictionary<string, object>)x;
+			}
+			var builder = new StringBuilder("[");
+			foreach(var exp in settings)
+			{
+				builder.Append((string)(exp.Value));
+				builder.Append(',');
+			}
+			builder.Remove(builder.Length - 1, 1);
+			builder.Append(']');
+			return JsonConvert.DeserializeObject<IEnumerable<Expert>>(builder.ToString());
+		}
     }
 }
