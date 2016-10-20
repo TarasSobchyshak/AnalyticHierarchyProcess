@@ -96,7 +96,7 @@
                 <Grid>
                     <StackPanel Orientation="Horizontal">
                         <ComboBox ItemsSource="{Binding Path=Experts}" 
-                                  SelectedIndex="{Binding Path=SelectedExpert, Mode=TwoWay}"
+                                  SelectedItem="{Binding Path=SelectedExpert,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                   Width="130"
                                   Height="25"
                                   Margin="5">

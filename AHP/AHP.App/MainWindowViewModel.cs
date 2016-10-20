@@ -4,6 +4,7 @@ using AHP.BL.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -63,7 +64,8 @@ namespace AHP.App
 
         public MainWindowViewModel()
         {
-            layoutAlgorithmTypes = new List<string>();
+			PropertyChanged += OnSelectedExpertChanged;
+			layoutAlgorithmTypes = new List<string>();
             Graph = new Graph(true);
             Experts = new ObservableCollection<Expert>();
             Experts.Add(new Expert("Taras"));
@@ -73,19 +75,7 @@ namespace AHP.App
                 x.Tree = App.Tree;
             }
 
-            SelectedExpert = Experts[0];
 
-            Graph.AddVertex(SelectedExpert.Tree.Goal); // replace SelectedExpert with selectedExpert.Tree (from combobox) in private method
-            Graph.AddVertexRange(SelectedExpert.Tree.Criteria);
-            Graph.AddVertexRange(SelectedExpert.Tree.Alternatives);
-
-            AddNewGraphEdges(SelectedExpert.Tree.Goal, SelectedExpert.Tree.Criteria.Where(x => x.Level == 1));
-            AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == SelectedExpert.Tree.AlternativesLevel - 1), SelectedExpert.Tree.Alternatives);
-
-            for (int i = 1; i < SelectedExpert.Tree.AlternativesLevel - 1; ++i)
-            {
-                AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == i), SelectedExpert.Tree.Criteria.Where(x => x.Level == i + 1));
-            }
 
             //Add Layout Algorithm Types
             layoutAlgorithmTypes.Add("BoundedFR");
@@ -166,7 +156,25 @@ namespace AHP.App
         public ICommand LoadExpertCommand => new DelegateCommand(new Action(() => LoadExpert()));
         public ICommand LoadExpertSCommand => new DelegateCommand(new Action(() => LoadExperts()));
 
-        private void SaveTree()
+		private void OnSelectedExpertChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName!=nameof(SelectedExpert) || SelectedExpert == null) return;
+			Graph.Clear();
+
+			Graph.AddVertex(SelectedExpert.Tree.Goal);
+			Graph.AddVertexRange(SelectedExpert.Tree.Criteria);
+			Graph.AddVertexRange(SelectedExpert.Tree.Alternatives);
+
+			AddNewGraphEdges(SelectedExpert.Tree.Goal, SelectedExpert.Tree.Criteria.Where(x => x.Level == 1));
+			AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == SelectedExpert.Tree.AlternativesLevel - 1), SelectedExpert.Tree.Alternatives);
+
+			for (int i = 1; i < SelectedExpert.Tree.AlternativesLevel - 1; ++i)
+			{
+				AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == i), SelectedExpert.Tree.Criteria.Where(x => x.Level == i + 1));
+			}
+		}
+
+		private void SaveTree()
         {
             if (SelectedExpert != null)
                 App.SaveTree(SelectedExpert.Name + "Tree", SelectedExpert.Tree);
