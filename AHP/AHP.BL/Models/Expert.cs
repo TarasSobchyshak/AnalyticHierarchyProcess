@@ -58,8 +58,8 @@ namespace AHP.BL.Models
 
         private void InitPCM()
         {
-            if (Tree != null)
-                PCM = new PairwiseComparisonMatrix() { X = Tree.Goal.PCM.X, M = new Matrix(new List<Vector>(Tree.Criteria.Select(c => c.PCM.X.GetColumn(0)))) };
+            //if (Tree != null)
+            //    PCM = new PairwiseComparisonMatrix() { X = Tree.Goal.PCM.X, M = new Matrix(new List<Vector>(Tree.Criteria.Select(c => c.PCM.X.GetColumn(0)))) };
         }
     }
 }

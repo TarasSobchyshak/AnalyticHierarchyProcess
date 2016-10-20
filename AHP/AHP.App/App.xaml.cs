@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows;
@@ -20,28 +21,40 @@ namespace AHP.App
             get
             {
                 var tree = new Tree(
-                    new Goal() { Value = "Goal" },
-                    new List<Criterion>()
-                    {
-                        new Criterion(){ Value = "Criterion 1", Level = 1 },
-                        new Criterion(){ Value = "Criterion 2", Level = 2 },
-                        new Criterion(){ Value = "Criterion 4", Level = 1 },
-                        new Criterion(){ Value = "Criterion 6", Level = 2 },
-                        new Criterion(){ Value = "Criterion 3", Level = 4 },
-                        new Criterion(){ Value = "Criterion 5", Level = 3 },
-                        new Criterion(){ Value = "Criterion 7", Level = 1 }
-                    }
-                );
-                tree.Alternatives.Add(new Alternative() { Value = "Alternative 1", Level = tree.AlternativesLevel });
-                tree.Alternatives.Add(new Alternative() { Value = "Alternative 2", Level = tree.AlternativesLevel });
-                tree.Alternatives.Add(new Alternative() { Value = "Alternative 3", Level = tree.AlternativesLevel });
-                tree.Alternatives.Add(new Alternative() { Value = "Alternative 4", Level = tree.AlternativesLevel });
+                  new Goal() { Value = "Вибір теми" },
+                  new List<Criterion>()
+                  {
+                        new Criterion(){ Value = "Актуальність", Level = 1 },
+                        new Criterion(){ Value = "Оригінальність", Level = 1 },
+                        new Criterion(){ Value = "Перспективність", Level = 1 },
+                        new Criterion(){ Value = "Ефективність", Level = 1 },
+                        new Criterion(){ Value = "Популярність", Level = 2 },
+                        new Criterion(){ Value = "Складність", Level = 2 },
+                        new Criterion(){ Value = "залупа", Level = 2 }
+                  }
+              );
+                tree.Alternatives.Add(new Alternative() { Value = "Розмальовка писанок", Level = tree.AlternativesLevel });
+                tree.Alternatives.Add(new Alternative() { Value = "Вибір технології", Level = tree.AlternativesLevel });
+                tree.Alternatives.Add(new Alternative() { Value = "Вибір машини", Level = tree.AlternativesLevel });
+                tree.Alternatives.Add(new Alternative() { Value = "Вибір книги", Level = tree.AlternativesLevel });
 
-                tree.Goal.PCM = new PairwiseComparisonMatrix(new Matrix(tree.Criteria.Count), tree.Goal.Level);
+                tree.Goal.PCM = new PairwiseComparisonMatrix(new Matrix(tree.Criteria.Where(c => c.Level == 1).Count()), tree.Goal.Level);
                 for (int i = 0; i < tree.Criteria.Count; ++i)
                 {
-                    tree.Criteria[i].PCM = new PairwiseComparisonMatrix(Matrix.IdentityMatrix(tree.Alternatives.Count), tree.Goal.Level);
+                    int n;
+                    if (tree.Criteria[i].Level + 1 == tree.AlternativesLevel)
+                        tree.Criteria[i].PCM = new PairwiseComparisonMatrix(Matrix.IdentityMatrix(tree.Alternatives.Count()), tree.AlternativesLevel);
+                    else
+                    {
+                        n = tree.Criteria.Where(t => t.Level == tree.Criteria[i].Level + 1).Count();
+                        tree.Criteria[i].PCM = new PairwiseComparisonMatrix(Matrix.IdentityMatrix(n), i + 1);
+                    }
                 }
+                //tree.Goal.PCM = new PairwiseComparisonMatrix(new Matrix(tree.Criteria.Count), tree.Goal.Level);
+                //for (int i = 0; i < tree.Criteria.Count; ++i)
+                //{
+                //    tree.Criteria[i].PCM = new PairwiseComparisonMatrix(Matrix.IdentityMatrix(tree.Alternatives.Count), tree.Goal.Level);
+                //}
 
                 return tree;
             }

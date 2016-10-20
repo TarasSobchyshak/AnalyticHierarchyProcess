@@ -12,7 +12,7 @@ namespace AHP.BL.Models
         private Matrix _x;
         private int _level;
 
-		[JsonIgnore]
+        [JsonIgnore]
         public ICommand RefVector
         {
             get { return new DelegateCommand(new Action(() => RefreshLocalPriorityVector())); }
@@ -76,6 +76,14 @@ namespace AHP.BL.Models
 
         public void RefreshLocalPriorityVector()
         {
+            for (int i = 0; i < M.N; ++i)
+            {
+                for (int j = i; j < M.M; ++j)
+                {
+                    M[i, j] = i == j ? 1 : 1.0 / M[j, i];
+                }
+            }
+
             X = new Matrix(GetLocalPriorityVector(M));
         }
     }
