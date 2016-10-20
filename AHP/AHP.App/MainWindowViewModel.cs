@@ -1,10 +1,11 @@
 ﻿using AHP.BL.GraphModels;
 using AHP.BL.Interfaces;
 using AHP.BL.Models;
-using GraphSharp.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace AHP.App
 {
@@ -16,6 +17,13 @@ namespace AHP.App
         private List<string> layoutAlgorithmTypes;
         private ObservableCollection<Expert> _experts;
         private Expert _selectedExpert;
+        private string _expertName;
+
+        public string ExpertName
+        {
+            get { return _expertName; }
+            set { SetProperty(ref _expertName, value); }
+        }
 
         public Graph Graph
         {
@@ -148,6 +156,48 @@ namespace AHP.App
             RaisePropertyChanged(nameof(Graph));
             return res;
         }
+        #endregion
+
+        #region Commands
+
+        public ICommand SaveTreeCommand => new DelegateCommand(new Action(() => SaveTree()));
+        public ICommand SaveExpertCommand => new DelegateCommand(new Action(() => SaveExpert()));
+        public ICommand LoadTreeCommand => new DelegateCommand(new Action(() => LoadTree()));
+        public ICommand LoadExpertCommand => new DelegateCommand(new Action(() => LoadExpert()));
+        public ICommand LoadExpertSCommand => new DelegateCommand(new Action(() => LoadExperts()));
+
+        private void SaveTree()
+        {
+            if (SelectedExpert != null)
+                App.SaveTree(SelectedExpert.Name + "Tree");
+        }
+
+        private void LoadTree()
+        {
+            if (SelectedExpert != null)
+                App.LoadTree(SelectedExpert.Name + "Tree");
+        }
+
+        private void SaveExpert()
+        {
+            if (SelectedExpert != null)
+                App.SaveExpert(SelectedExpert.Name);
+        }
+
+        private void LoadExpert()
+        {
+            Experts.Add(App.LoadExpert(ExpertName));
+        }
+
+
+        private void LoadExperts()
+        {
+            foreach (var x in Experts)
+            {
+                App.LoadExpert(SelectedExpert.Name);
+            }
+        }
+
         #endregion
     }
 }

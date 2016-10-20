@@ -13,6 +13,47 @@
         <local:MainWindowViewModel/>
     </Window.DataContext>
 
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#EEEEEEEE"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10 5"/>
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border
+                                x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" />
+
+                            <ContentPresenter
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                RecognizesAccessKey="True" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="OpacityMask" Value="#AA888888"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="Foreground" Value="Blue"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#ADADAD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -53,13 +94,25 @@
                     <CheckBox Content="Is graph hidden" IsChecked="{Binding IsGraphHidden}"/>
                 </Grid>
                 <Grid>
-                    <ComboBox ItemsSource="{Binding Path=Experts}" SelectedIndex="{Binding Path=SelectedExpert, Mode=TwoWay}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Path=Name}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox ItemsSource="{Binding Path=Experts}" 
+                                  SelectedIndex="{Binding Path=SelectedExpert, Mode=TwoWay}"
+                                  Width="130"
+                                  Height="25"
+                                  Margin="5">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Button Content="Save expert" Command="{Binding SaveExpertCommand}"  Width="100" Height="25" Margin="15,5,5,5"/>
+                        <Button Content="Load experts" Command="{Binding LoadExpertSCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
+                        <TextBox Text="{Binding ExpertName}" Width="100" Height="25" Margin="15,5,5,5"/>
+                        <Button Content="Load expert" Command="{Binding LoadExpertCommand}" Width="100" Height="25" Margin="5,5,5,5"/>
+
+                    </StackPanel>
                 </Grid>
             </StackPanel>
         </Grid>
@@ -83,11 +136,13 @@
                 <StackPanel Orientation="Horizontal" Background="Black"
                         HorizontalAlignment="Stretch" Margin="0">
                     <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
-                        FontSize="10" FontFamily="Verdana" FontWeight="Bold" Margin="0,0,0,0"  
+                        FontSize="14" 
                         Content="Layout Type"/>
                     <ComboBox ItemsSource="{Binding LayoutAlgorithmTypes}"
                           SelectedItem="{Binding Path=LayoutAlgorithmType, Mode=TwoWay}"
-                          Width="150" Height="25" Margin="5" />
+                          Width="150" Height="25" Margin="5"/>
+                    <Button Content="Save tree" Command="{Binding SaveTreeCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
+                    <Button Content="Load tree" Command="{Binding LoadTreeCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
                 </StackPanel>
             </StackPanel>
 
@@ -101,18 +156,4 @@
         </Grid>
 
     </Grid>
-
-    <!--<Grid>
-
-        <StackPanel>
-            -->
-    <!--<controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty}" VerticalAlignment="Top"/>
-            <controls:MatrixGrid Margin="10" Matrix="{Binding MyProperty}" VerticalAlignment="Top"/>
-            <controls:ExpertControl Margin="10" Expert="{Binding Expert}" VerticalAlignment="Top"/>-->
-    <!--
-            
-            
-        </StackPanel>
-
-    </Grid>-->
 </Window>

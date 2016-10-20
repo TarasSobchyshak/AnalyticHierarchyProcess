@@ -41,6 +41,33 @@ namespace AHP.App
             }
         }
 
+        public static void SaveTree(string key)
+        {
+            // iso storage 
+        }
 
+        public static void SaveExpert(string key)
+        {
+            // iso storage 
+        }
+
+
+        public static Tree LoadTree(string key)
+        {
+            // iso storage 
+            return null;
+        }
+
+        public static Expert LoadExpert(string key)
+        {
+            // iso storage 
+            return null;
+        }
+
+        public static IEnumerable<Expert> LoadExperts(string[] keys)
+        {
+            // iso storage 
+            return null;
+        }
     }
 }
