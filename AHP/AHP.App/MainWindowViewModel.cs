@@ -155,7 +155,7 @@ namespace AHP.App
         private void OnSelectedExpertChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(SelectedExpert) || SelectedExpert == null) return;
-            Graph.Clear();
+			Graph = new Graph(true);
             
             Graph.AddVertex(SelectedExpert.Tree.Goal);
             Graph.AddVertexRange(SelectedExpert.Tree.Criteria);
