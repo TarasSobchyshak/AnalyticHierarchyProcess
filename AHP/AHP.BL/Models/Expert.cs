@@ -1,4 +1,7 @@
-﻿namespace AHP.BL.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AHP.BL.Models
 {
     public class Expert : ObservableObject
     {
@@ -42,6 +45,16 @@
         {
             get { return _weight; }
             set { SetProperty(ref _weight, value); }
+        }
+
+        public Vector GetGlobalProorityVector()
+        {
+            return PCM == null ? null : PCM.M * PCM.X.GetColumn(0);
+        }
+
+        private void InitPCM()
+        {
+            PCM = new PairwiseComparisonMatrix() { X = Tree.Goal.PCM.X, M = new Matrix((IList<Vector>)Tree.Criteria.Select(c => c.PCM.X.GetColumn(0))) };
         }
     }
 }

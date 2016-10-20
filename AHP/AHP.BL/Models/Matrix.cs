@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AHP.BL.Models
 {
@@ -35,6 +37,19 @@ namespace AHP.BL.Models
             M = 1;
             A = new double[N, M];
             for (int i = 0; i < N; ++i) A[i, 0] = x[i];
+        }
+        public Matrix(IList<Vector> x)
+        {
+            N = x.FirstOrDefault().Length;
+            M = x.Count();
+            A = new double[N, M];
+            for (int i = 0; i < N; ++i)
+            {
+                for (int j = 0; j < M; ++j)
+                {
+                    A[i, j] = x[j][i];
+                }
+            }
         }
         public Matrix(Matrix a)
         {

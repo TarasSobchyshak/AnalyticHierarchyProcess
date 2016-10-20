@@ -17,6 +17,10 @@ namespace AHP.BL.Models
         {
             get { return new DelegateCommand(new Action(() => RefreshLocalPriorityVector())); }
         }
+        public PairwiseComparisonMatrix()
+        {
+
+        }
         public PairwiseComparisonMatrix(Matrix m, int level)
         {
             Level = level;
