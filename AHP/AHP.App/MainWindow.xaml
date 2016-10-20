@@ -114,6 +114,7 @@
 
                     </StackPanel>
                 </Grid>
+                <controls:ExpertControl Expert="{Binding Path=SelectedExpert, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
             </StackPanel>
         </Grid>
 
