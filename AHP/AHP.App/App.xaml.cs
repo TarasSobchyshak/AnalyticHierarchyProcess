@@ -41,14 +41,15 @@ namespace AHP.App
             }
         }
 
-        public static void SaveTree(string key)
+        public static void SaveTree(string key, Tree tree)
         {
             // iso storage 
         }
 
-        public static void SaveExpert(string key)
+        public static void SaveExpert(Expert expert)
         {
             // iso storage 
+            string key = expert.Name;
         }
 
 

@@ -175,7 +175,7 @@ namespace AHP.App
         private void LoadTree()
         {
             if (SelectedExpert != null)
-                App.LoadTree(SelectedExpert.Name + "Tree");
+                SelectedExpert.Tree = App.LoadTree(SelectedExpert.Name + "Tree");
         }
 
         private void SaveExpert()
