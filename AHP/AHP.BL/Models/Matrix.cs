@@ -38,7 +38,7 @@ namespace AHP.BL.Models
             A = new double[N, M];
             for (int i = 0; i < N; ++i) A[i, 0] = x[i];
         }
-        public Matrix(IList<Vector> x)
+        public Matrix(List<Vector> x)
         {
             N = x.FirstOrDefault().Length;
             M = x.Count();

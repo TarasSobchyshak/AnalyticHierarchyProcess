@@ -38,7 +38,11 @@ namespace AHP.BL.Models
         public Tree Tree
         {
             get { return _tree; }
-            set { SetProperty(ref _tree, value); }
+            set
+            {
+                SetProperty(ref _tree, value);
+                InitPCM();
+            }
         }
 
         public double Weight
@@ -54,7 +58,7 @@ namespace AHP.BL.Models
 
         private void InitPCM()
         {
-            PCM = new PairwiseComparisonMatrix() { X = Tree.Goal.PCM.X, M = new Matrix((IList<Vector>)Tree.Criteria.Select(c => c.PCM.X.GetColumn(0))) };
+            PCM = new PairwiseComparisonMatrix() { X = Tree.Goal.PCM.X, M = new Matrix(new List<Vector>(Tree.Criteria.Select(c => c.PCM.X.GetColumn(0)))) };
         }
     }
 }
