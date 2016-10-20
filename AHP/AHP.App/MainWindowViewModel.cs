@@ -64,8 +64,8 @@ namespace AHP.App
 
         public MainWindowViewModel()
         {
-			PropertyChanged += OnSelectedExpertChanged;
-			layoutAlgorithmTypes = new List<string>();
+            PropertyChanged += OnSelectedExpertChanged;
+            layoutAlgorithmTypes = new List<string>();
             Graph = new Graph(true);
             Experts = new ObservableCollection<Expert>();
             Experts.Add(new Expert("Taras"));
@@ -97,7 +97,6 @@ namespace AHP.App
         {
             var x = new Edge(from, to);
             Graph.AddEdge(x);
-            RaisePropertyChanged(nameof(Graph));
             return x;
         }
 
@@ -111,7 +110,6 @@ namespace AHP.App
                 res.Add(x);
                 Graph.AddEdge(x);
             }
-            RaisePropertyChanged(nameof(Graph));
             return res;
         }
 
@@ -126,7 +124,6 @@ namespace AHP.App
                 res.Add(x);
                 Graph.AddEdge(x);
             }
-            RaisePropertyChanged(nameof(Graph));
             return res;
         }
 
@@ -143,7 +140,6 @@ namespace AHP.App
                     Graph.AddEdge(x);
                 }
             }
-            RaisePropertyChanged(nameof(Graph));
             return res;
         }
         #endregion
@@ -156,25 +152,27 @@ namespace AHP.App
         public ICommand LoadExpertCommand => new DelegateCommand(new Action(() => LoadExpert()));
         public ICommand LoadExpertSCommand => new DelegateCommand(new Action(() => LoadExperts()));
 
-		private void OnSelectedExpertChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName!=nameof(SelectedExpert) || SelectedExpert == null) return;
-			Graph.Clear();
+        private void OnSelectedExpertChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(SelectedExpert) || SelectedExpert == null) return;
+            Graph.Clear();
+            
+            Graph.AddVertex(SelectedExpert.Tree.Goal);
+            Graph.AddVertexRange(SelectedExpert.Tree.Criteria);
+            Graph.AddVertexRange(SelectedExpert.Tree.Alternatives);
 
-			Graph.AddVertex(SelectedExpert.Tree.Goal);
-			Graph.AddVertexRange(SelectedExpert.Tree.Criteria);
-			Graph.AddVertexRange(SelectedExpert.Tree.Alternatives);
+            AddNewGraphEdges(SelectedExpert.Tree.Goal, SelectedExpert.Tree.Criteria.Where(x => x.Level == 1));
+            AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == SelectedExpert.Tree.AlternativesLevel - 1), SelectedExpert.Tree.Alternatives);
 
-			AddNewGraphEdges(SelectedExpert.Tree.Goal, SelectedExpert.Tree.Criteria.Where(x => x.Level == 1));
-			AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == SelectedExpert.Tree.AlternativesLevel - 1), SelectedExpert.Tree.Alternatives);
+            for (int i = 1; i < SelectedExpert.Tree.AlternativesLevel - 1; ++i)
+            {
+                AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == i), SelectedExpert.Tree.Criteria.Where(x => x.Level == i + 1));
+            }
 
-			for (int i = 1; i < SelectedExpert.Tree.AlternativesLevel - 1; ++i)
-			{
-				AddNewGraphEdges(SelectedExpert.Tree.Criteria.Where(x => x.Level == i), SelectedExpert.Tree.Criteria.Where(x => x.Level == i + 1));
-			}
-		}
+            RaisePropertyChanged(nameof(Graph));
+        }
 
-		private void SaveTree()
+        private void SaveTree()
         {
             if (SelectedExpert != null)
                 App.SaveTree(SelectedExpert.Name + "Tree", SelectedExpert.Tree);
@@ -194,17 +192,20 @@ namespace AHP.App
 
         private void LoadExpert()
         {
-            Experts.Add(App.LoadExpert(ExpertName));
+            var x = App.LoadExpert(ExpertName);
+            if (!Experts.Contains(x))
+                Experts.Add(App.LoadExpert(ExpertName));
         }
 
 
         private void LoadExperts()
         {
-			var x= App.LoadExperts();
-			foreach(var exp in x)
-			{
-				Experts.Add(exp);
-			}
+            Experts.Clear();
+            var x = App.LoadExperts();
+            foreach (var exp in x)
+            {
+                Experts.Add(exp);
+            }
         }
 
         #endregion

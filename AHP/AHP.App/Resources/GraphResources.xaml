@@ -65,6 +65,7 @@
             </ToolTip>
         </Style.Resources>
         <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
+        <Setter Property="Foreground" Value="White"/>
     </Style>
 
     <Style x:Key="ShowHideButtonStyle" TargetType="Button">
