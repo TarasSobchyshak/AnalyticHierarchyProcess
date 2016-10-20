@@ -169,7 +169,7 @@ namespace AHP.App
         private void SaveTree()
         {
             if (SelectedExpert != null)
-                App.SaveTree(SelectedExpert.Name + "Tree");
+                App.SaveTree(SelectedExpert.Name + "Tree", SelectedExpert.Tree);
         }
 
         private void LoadTree()
@@ -181,7 +181,7 @@ namespace AHP.App
         private void SaveExpert()
         {
             if (SelectedExpert != null)
-                App.SaveExpert(SelectedExpert.Name);
+                App.SaveExpert(SelectedExpert);
         }
 
         private void LoadExpert()
