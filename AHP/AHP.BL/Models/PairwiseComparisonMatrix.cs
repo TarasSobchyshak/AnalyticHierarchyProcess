@@ -3,6 +3,7 @@ using static AHP.BL.Models.Matrix;
 using System.Windows.Input;
 using System;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace AHP.BL.Models
 {
@@ -11,6 +12,7 @@ namespace AHP.BL.Models
         private Matrix _m;
         private Matrix _x;
         private int _level;
+        private double _index;
 
         [JsonIgnore]
         public ICommand RefVector
@@ -43,6 +45,13 @@ namespace AHP.BL.Models
             get { return _level; }
             set { SetProperty(ref _level, value); }
         }
+
+        public double Index
+        {
+            get { return _index; }
+            set { SetProperty(ref _index, value); }
+        }
+
         public double this[int i, int j]
         {
             get { return _m[i, j]; }
@@ -85,6 +94,13 @@ namespace AHP.BL.Models
             }
 
             X = new Matrix(GetLocalPriorityVector(M));
+
+            double lam = 0.0;
+            for (int i = 0; i < X.GetColumn(0).Length; ++i)
+            {
+                lam += X.GetColumn(0)[i] * M.GetColumn(i).X.Sum();
+            }
+            Index = (lam - M.N) / (M.N - 1);
         }
     }
 }

@@ -30,6 +30,7 @@
                                                     <TextBlock Text="{Binding Value, StringFormat='{}Value: {0}'}" Foreground="White" FontSize="24" Margin="5,0"/>
                                                     <TextBlock Text="{Binding Weight, StringFormat='{}Weight: {0:P2}'}" Foreground="White" FontSize="24" Margin="5,0"/>
                                                     <TextBlock Text="{Binding Level, StringFormat='{}Level: {0}'}" Foreground="White" FontSize="24" Margin="5,0"/>
+                                                    <TextBlock Text="{Binding Index, StringFormat='{}Index: {0}'}" Foreground="White" FontSize="24" Margin="5,0"/>
                                                 </StackPanel>
                                                 <Button Grid.Column="1" Content="Refresh" Height="25" Width="70" Command="{Binding Path=PCM.RefVector}"/>
                                             </Grid>

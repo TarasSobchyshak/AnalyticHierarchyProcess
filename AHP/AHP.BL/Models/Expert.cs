@@ -51,15 +51,40 @@ namespace AHP.BL.Models
             set { SetProperty(ref _weight, value); }
         }
 
-        public Vector GetGlobalProorityVector()
+        public Matrix GlobalPriorityVector => GetGlobalPriorityVector();
+
+        public Matrix GetGlobalPriorityVector()
         {
-            return PCM == null ? null : PCM.M * PCM.X.GetColumn(0);
+            if (Tree == null) return new Matrix(1);
+            var trees = new List<Matrix>();
+            for (int i = Tree.AlternativesLevel - 2; i >= 0; --i)
+            {
+                var vect = Tree.Criteria
+                    .Where(c => c.Level == i + 1)
+                    .Select(v => v.PCM.X.GetColumn(0))
+                    .ToList();
+                var temp = new Matrix(vect);
+
+                trees.Add(temp);
+            }
+
+            for (int i = 0; i < trees.Count - 1; ++i)
+            {
+                trees[i + 1] = trees[i] * trees[i + 1];
+            }
+
+            var result = trees.Last() * Tree.Goal.PCM.X;
+            return result;
         }
 
         private void InitPCM()
         {
-            //if (Tree != null)
-            //    PCM = new PairwiseComparisonMatrix() { X = Tree.Goal.PCM.X, M = new Matrix(new List<Vector>(Tree.Criteria.Select(c => c.PCM.X.GetColumn(0)))) };
+            if (Tree != null)
+                PCM = new PairwiseComparisonMatrix()
+                {
+                    X = Tree.Goal.PCM.X,
+                    M = Tree.Goal.PCM.M
+                };
         }
     }
 }

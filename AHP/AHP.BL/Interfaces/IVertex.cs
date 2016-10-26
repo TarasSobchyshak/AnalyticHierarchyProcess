@@ -8,5 +8,6 @@ namespace AHP.BL.Interfaces
         string Value { get; set; }
         double Weight { get; set; }
         int Level { get; }
+        double Index { get; set; }
     }
 }

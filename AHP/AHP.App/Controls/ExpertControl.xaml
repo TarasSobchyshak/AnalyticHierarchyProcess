@@ -22,13 +22,8 @@
             </StackPanel>
 
 
-            <StackPanel Grid.Column="1">
-                <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                    <local:MatrixGrid Matrix="{Binding Path=M}" Margin="5"/>
-                    <local:MatrixGrid Matrix="{Binding Path=X}" Margin="5"/>
-                </StackPanel>
-                <local:MatrixGrid Matrix="{Binding ElementName=this, Path=Expert.PCM.M}" Margin="5"/>
-                <local:MatrixGrid Matrix="{Binding ElementName=this, Path=Expert.PCM.X}" Margin="5"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <local:MatrixGrid Matrix="{Binding ElementName=this, Path=Expert.GlobalPriorityVector}" Margin="5"/>
             </StackPanel>
         </Grid>
     </Border>
