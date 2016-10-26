@@ -82,6 +82,7 @@ namespace AHP.App
             AggregatedVector = new Matrix(1);
 
             Experts.Add(new Expert("Taras"));
+            Experts.Add(new Expert("32423"));
 
             foreach (var x in Experts)
             {

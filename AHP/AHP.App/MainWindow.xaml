@@ -129,8 +129,8 @@
                     </ComboBox>
 
                     <Button Content="Save expert" Command="{Binding SaveExpertCommand}"  Width="100" Height="25" Margin="15,5,5,5"/>
-                    <Button Content="Load experts" Command="{Binding LoadExpertSCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
-                    <Button Content="Save experts" Command="{Binding SaveExpertSCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
+                    <Button Content="Load experts" Command="{Binding LoadExpertsCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
+                    <Button Content="Save experts" Command="{Binding SaveExpertsCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
                     <TextBox Text="{Binding ExpertName}" Width="100" Height="25" Margin="15,5,5,5"/>
                     <Button Content="Load expert" Command="{Binding LoadExpertCommand}" Width="100" Height="25" Margin="5,5,5,5"/>
                 </StackPanel>
