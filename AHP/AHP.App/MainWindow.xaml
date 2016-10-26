@@ -62,32 +62,35 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" >
-            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Grid>
-                    <StackPanel Orientation="Horizontal">
-                        <ComboBox ItemsSource="{Binding Path=Experts}" 
-                                  SelectedItem="{Binding Path=SelectedExpert,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  Width="130"
-                                  Height="25"
-                                  Margin="5">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=Name}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+        <StackPanel Grid.Column="0"
+                    Visibility="{Binding IsExpertSelected, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                        <Button Content="Save expert" Command="{Binding SaveExpertCommand}"  Width="100" Height="25" Margin="15,5,5,5"/>
-                        <Button Content="Load experts" Command="{Binding LoadExpertSCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
-                        <TextBox Text="{Binding ExpertName}" Width="100" Height="25" Margin="15,5,5,5"/>
-                        <Button Content="Load expert" Command="{Binding LoadExpertCommand}" Width="100" Height="25" Margin="5,5,5,5"/>
-
-                    </StackPanel>
-                </Grid>
+            <ScrollViewer MaxHeight="425" 
+                          VerticalAlignment="Top"
+                          VerticalScrollBarVisibility="Visible">
+                
                 <controls:ExpertControl Expert="{Binding Path=SelectedExpert, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-            </StackPanel>
-        </Grid>
+            </ScrollViewer>
+
+            <Button Content="Refresh" Margin="10" HorizontalAlignment="Center" Command="{Binding Path=RefreshAggregatedVector, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <Grid Margin="25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="Aggregated global priority vector" 
+                           Margin="5" 
+                           VerticalAlignment="Center"/>
+
+                <controls:MatrixGrid Grid.Column="1"
+                                     Matrix="{Binding ElementName=this, Path=AggregatedVector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                     Margin="5" 
+                                     VerticalAlignment="Stretch"/>
+            </Grid>
+        </StackPanel>
 
         <GridSplitter Grid.Column="1"
                       HorizontalAlignment="Stretch" 
@@ -112,8 +115,24 @@
                     <ComboBox ItemsSource="{Binding LayoutAlgorithmTypes}"
                           SelectedItem="{Binding Path=LayoutAlgorithmType, Mode=TwoWay}"
                           Width="150" Height="25" Margin="5"/>
-                    <Button Content="Save tree" Command="{Binding SaveTreeCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
-                    <Button Content="Load tree" Command="{Binding LoadTreeCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
+
+                    <ComboBox ItemsSource="{Binding Path=Experts}" 
+                              SelectedItem="{Binding Path=SelectedExpert, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              Width="130"
+                              Height="25"
+                              Margin="5">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <Button Content="Save expert" Command="{Binding SaveExpertCommand}"  Width="100" Height="25" Margin="15,5,5,5"/>
+                    <Button Content="Load experts" Command="{Binding LoadExpertSCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
+                    <Button Content="Save experts" Command="{Binding SaveExpertSCommand}" Width="100" Height="25" Margin="15,5,5,5"/>
+                    <TextBox Text="{Binding ExpertName}" Width="100" Height="25" Margin="15,5,5,5"/>
+                    <Button Content="Load expert" Command="{Binding LoadExpertCommand}" Width="100" Height="25" Margin="5,5,5,5"/>
                 </StackPanel>
             </StackPanel>
 

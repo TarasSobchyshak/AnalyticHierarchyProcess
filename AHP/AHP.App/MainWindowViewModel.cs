@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using static System.Math;
 
 namespace AHP.App
 {
@@ -18,6 +19,7 @@ namespace AHP.App
         private ObservableCollection<Expert> _experts;
         private Expert _selectedExpert;
         private string _expertName;
+        private Matrix _aggregatedVector;
 
         public string ExpertName
         {
@@ -37,10 +39,22 @@ namespace AHP.App
             set { SetProperty(ref _experts, value); }
         }
 
+        public bool IsExpertSelected => SelectedExpert != null;
+
         public Expert SelectedExpert
         {
             get { return _selectedExpert; }
-            set { SetProperty(ref _selectedExpert, value); }
+            set
+            {
+                SetProperty(ref _selectedExpert, value);
+                RaisePropertyChanged("IsExpertSelected");
+            }
+        }
+
+        public Matrix AggregatedVector
+        {
+            get { return _aggregatedVector; }
+            set { SetProperty(ref _aggregatedVector, value); }
         }
 
         public List<string> LayoutAlgorithmTypes
@@ -54,6 +68,10 @@ namespace AHP.App
             set { SetProperty(ref _layoutAlgorithmType, value); }
         }
 
+        public ICommand RefreshAggregatedVector
+        {
+            get { return new DelegateCommand(new Action(() => RefreshAggregatedVectorMethod())); }
+        }
 
         public MainWindowViewModel()
         {
@@ -61,6 +79,8 @@ namespace AHP.App
             layoutAlgorithmTypes = new List<string>();
             Graph = new Graph(true);
             Experts = new ObservableCollection<Expert>();
+            AggregatedVector = new Matrix(1);
+
             Experts.Add(new Expert("Taras"));
 
             foreach (var x in Experts)
@@ -135,17 +155,18 @@ namespace AHP.App
 
         #region Commands
 
-        public ICommand SaveTreeCommand => new DelegateCommand(new Action(() => SaveTree()));
+        //public ICommand SaveTreeCommand => new DelegateCommand(new Action(() => SaveTree()));
         public ICommand SaveExpertCommand => new DelegateCommand(new Action(() => SaveExpert()));
-        public ICommand LoadTreeCommand => new DelegateCommand(new Action(() => LoadTree()));
+        //public ICommand LoadTreeCommand => new DelegateCommand(new Action(() => LoadTree()));
         public ICommand LoadExpertCommand => new DelegateCommand(new Action(() => LoadExpert()));
-        public ICommand LoadExpertSCommand => new DelegateCommand(new Action(() => LoadExperts()));
+        public ICommand LoadExpertsCommand => new DelegateCommand(new Action(() => LoadExperts()));
+        public ICommand SaveExpertsCommand => new DelegateCommand(new Action(() => SaveExperts()));
 
         private void OnSelectedExpertChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(SelectedExpert) || SelectedExpert == null) return;
-			Graph = new Graph(true);
-            
+            Graph = new Graph(true);
+
             Graph.AddVertex(SelectedExpert.Tree.Goal);
             Graph.AddVertexRange(SelectedExpert.Tree.Criteria);
             Graph.AddVertexRange(SelectedExpert.Tree.Alternatives);
@@ -161,17 +182,32 @@ namespace AHP.App
             RaisePropertyChanged(nameof(Graph));
         }
 
-        private void SaveTree()
+        private void RefreshAggregatedVectorMethod()
         {
-            if (SelectedExpert != null)
-                App.SaveTree(SelectedExpert.Name + "Tree", SelectedExpert.Tree);
+            var norm = Sqrt(Experts.Select(e => e.Weight).Sum(x => x * x));
+            var vectors = Experts.Select(
+                e => new Vector(
+                        e.GlobalPriorityVector.GetColumn(0).Select(x => Pow(x, e.Weight / norm)).ToArray()
+                    )
+                ).ToList();
+
+            var temp = new Matrix(vectors);
+            var pcm = new PairwiseComparisonMatrix(temp, -1);
+
+            AggregatedVector = pcm.X;
         }
 
-        private void LoadTree()
-        {
-            if (SelectedExpert != null)
-                SelectedExpert.Tree = App.LoadTree(SelectedExpert.Name + "Tree");
-        }
+        //private void SaveTree()
+        //{
+        //    if (SelectedExpert != null)
+        //        App.SaveTree(SelectedExpert.Name + "Tree", SelectedExpert.Tree);
+        //}
+
+        //private void LoadTree()
+        //{
+        //    if (SelectedExpert != null)
+        //        SelectedExpert.Tree = App.LoadTree(SelectedExpert.Name + "Tree");
+        //}
 
         private void SaveExpert()
         {
@@ -196,6 +232,13 @@ namespace AHP.App
                 Experts.Add(exp);
             }
         }
+
+        private void SaveExperts()
+        {
+            if (Experts != null)
+                App.SaveExperts(Experts);
+        }
+
 
         #endregion
     }

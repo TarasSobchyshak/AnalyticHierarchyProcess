@@ -98,7 +98,7 @@ namespace AHP.BL.Models
 
         public Vector GetColumn(int index)
         {
-            if (index > M || index < 0) throw new IndexOutOfRangeException();
+            if (index >= M || index < 0) throw new IndexOutOfRangeException();
             double[] res = new double[N];
             for (int i = 0; i < N; ++i)
             {

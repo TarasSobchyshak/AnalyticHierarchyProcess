@@ -98,7 +98,7 @@ namespace AHP.BL.Models
             double lam = 0.0;
             for (int i = 0; i < X.GetColumn(0).Length; ++i)
             {
-                lam += X.GetColumn(0)[i] * M.GetColumn(i).X.Sum();
+                lam += X.GetColumn(0)[i] * M.GetRow(i).X.Sum();
             }
             Index = (lam - M.N) / (M.N - 1);
         }
