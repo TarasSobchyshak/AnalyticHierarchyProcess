@@ -14,7 +14,7 @@ namespace AHP.BL.Models
         {
             _name = name;
             _weight = weight;
-            _imageKey = "Images/ImageDefault.png";
+            _imageKey = "/Images/ImageDefault.png";
         }
 
         public string Name
