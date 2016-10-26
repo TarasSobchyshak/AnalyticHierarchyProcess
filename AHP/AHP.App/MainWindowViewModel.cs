@@ -12,7 +12,6 @@ namespace AHP.App
 {
     public class MainWindowViewModel : ObservableObject
     {
-        private bool _isGraphHidden;
         private string _layoutAlgorithmType;
         private Graph _graph;
         private List<string> layoutAlgorithmTypes;
@@ -44,12 +43,6 @@ namespace AHP.App
             set { SetProperty(ref _selectedExpert, value); }
         }
 
-        public bool IsGraphHidden
-        {
-            get { return _isGraphHidden; }
-            set { SetProperty(ref _isGraphHidden, value); }
-        }
-
         public List<string> LayoutAlgorithmTypes
         {
             get { return layoutAlgorithmTypes; }
@@ -75,9 +68,6 @@ namespace AHP.App
                 x.Tree = App.Tree;
             }
 
-
-
-            //Add Layout Algorithm Types
             layoutAlgorithmTypes.Add("BoundedFR");
             layoutAlgorithmTypes.Add("Circular");
             layoutAlgorithmTypes.Add("CompoundFDP");
@@ -88,8 +78,7 @@ namespace AHP.App
             layoutAlgorithmTypes.Add("LinLog");
             layoutAlgorithmTypes.Add("Tree");
 
-            //Pick a default Layout Algorithm Type
-            LayoutAlgorithmType = "LinLog";
+            LayoutAlgorithmType = "Circular";
         }
 
         #region AddEdges

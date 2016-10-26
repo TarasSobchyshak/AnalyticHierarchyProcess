@@ -57,42 +57,13 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition>
-                <ColumnDefinition.Style>
-                    <Style TargetType="{x:Type ColumnDefinition}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsGraphHidden}" Value="True">
-                                <Setter Property="Width" Value="0" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsGraphHidden}" Value="False">
-                                <Setter Property="Width" Value="Auto" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ColumnDefinition.Style>
-            </ColumnDefinition>
-            <ColumnDefinition>
-                <ColumnDefinition.Style>
-                    <Style TargetType="{x:Type ColumnDefinition}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsGraphHidden}" Value="True">
-                                <Setter Property="Width" Value="0" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsGraphHidden}" Value="False">
-                                <Setter Property="Width" Value="*" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ColumnDefinition.Style>
-            </ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" >
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Grid HorizontalAlignment="Center">
-                    <CheckBox Content="Is graph hidden" IsChecked="{Binding IsGraphHidden}"/>
-                </Grid>
                 <Grid>
                     <StackPanel Orientation="Horizontal">
                         <ComboBox ItemsSource="{Binding Path=Experts}" 
@@ -117,7 +88,6 @@
                 <controls:ExpertControl Expert="{Binding Path=SelectedExpert, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
             </StackPanel>
         </Grid>
-
 
         <GridSplitter Grid.Column="1"
                       HorizontalAlignment="Stretch" 
@@ -147,7 +117,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <zoom:ZoomControl Grid.Row="1" Zoom="0.5" ZoomBoxOpacity="0.2" Background="#ff656565">
+            <zoom:ZoomControl Grid.Row="1" Zoom="0.5" ZoomBoxOpacity="0.2" Background="#c2c2c2">
                 <graphmodels:GraphLayout x:Name="graphLayout" Margin="10"
 						Graph="{Binding Path=Graph}"
 						LayoutAlgorithmType="{Binding Path=LayoutAlgorithmType, Mode=OneWay}"

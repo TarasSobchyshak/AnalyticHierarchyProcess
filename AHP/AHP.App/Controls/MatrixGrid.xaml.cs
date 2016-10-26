@@ -2,9 +2,6 @@
 using AHP.BL.Models;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System;
-using System.Globalization;
 
 namespace AHP.App.Controls
 {

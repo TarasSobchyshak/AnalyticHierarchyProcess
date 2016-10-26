@@ -51,11 +51,6 @@ namespace AHP.App
                         tree.Criteria[i].PCM = new PairwiseComparisonMatrix(Matrix.IdentityMatrix(n), i + 1);
                     }
                 }
-                //tree.Goal.PCM = new PairwiseComparisonMatrix(new Matrix(tree.Criteria.Count), tree.Goal.Level);
-                //for (int i = 0; i < tree.Criteria.Count; ++i)
-                //{
-                //    tree.Criteria[i].PCM = new PairwiseComparisonMatrix(Matrix.IdentityMatrix(tree.Alternatives.Count), tree.Goal.Level);
-                //}
 
                 return tree;
             }
@@ -106,7 +101,7 @@ namespace AHP.App
             {
                 return JsonConvert.DeserializeObject<Tree>((string)settings[key]);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -127,7 +122,7 @@ namespace AHP.App
             {
                 return JsonConvert.DeserializeObject<Expert>((string)settings[key]);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -153,7 +148,13 @@ namespace AHP.App
             builder.Remove(builder.Length - 1, 1);
             builder.Append(']');
             var q = JsonConvert.DeserializeObject<IEnumerable<Expert>>(builder.ToString());
-            var ex = new ObservableCollection<Expert>(q.Select(c => new Expert(c.Name) { Tree = c.Tree, ImageKey = c.ImageKey, PCM = c.PCM, Weight = c.Weight }));
+            var ex = new ObservableCollection<Expert>(
+                q.Select(c => new Expert(c.Name)
+                {
+                    Tree = c.Tree,
+                    ImageKey = c.ImageKey,
+                    Weight = c.Weight
+                }));
             return ex;
         }
     }
