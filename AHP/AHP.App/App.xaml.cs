@@ -87,19 +87,26 @@ namespace AHP.App
 
         public static void SaveExperts(IEnumerable<Expert> experts)
         {
-            //
-            //
-            //
-            //
-            //
-            //    save experts
-            //
-            //
-            //
-            //
-            //
-            //
-        }
+			var settings = new Dictionary<string, object>();
+			BinaryFormatter formatter = new BinaryFormatter();
+			var store = IsolatedStorageFile.GetUserStoreForAssembly();
+			// Load
+			using (var stream = store.OpenFile("settings.cfg", FileMode.OpenOrCreate, FileAccess.Read))
+			{
+				var x = formatter.Deserialize(stream);
+				settings = (Dictionary<string, object>)x;
+			}
+			foreach(var exp in experts)
+			{
+				if (settings.ContainsKey(exp.Name)) settings.Remove(exp.Name);
+				settings.Add(exp.Name, JsonConvert.SerializeObject(exp));
+			}
+
+			using (var stream = store.OpenFile("settings.cfg", FileMode.OpenOrCreate, FileAccess.Write))
+			{
+				formatter.Serialize(stream, settings);
+			}
+		}
         
         //public static Tree LoadTree(string key)
         //{
