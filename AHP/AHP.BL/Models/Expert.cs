@@ -68,5 +68,11 @@ namespace AHP.BL.Models
             var result = trees.Last() * Tree.Goal.PCM.X;
             return result;
         }
+
+
+        public void RefreshGlobalPriorityVector()
+        {
+            RaisePropertyChanged(nameof(GlobalPriorityVector));
+        }
     }
 }

@@ -99,6 +99,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\StrMatrixControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +116,9 @@
     </Compile>
     <Compile Include="Controls\MatrixGrid.xaml.cs">
       <DependentUpon>MatrixGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StrMatrixControl.xaml.cs">
+      <DependentUpon>StrMatrixControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="DependencyPropertyExtensions\ExpressionExtensions.cs" />

@@ -68,28 +68,32 @@
             <ScrollViewer MaxHeight="425" 
                           VerticalAlignment="Top"
                           VerticalScrollBarVisibility="Visible">
-                
+
                 <controls:ExpertControl Expert="{Binding Path=SelectedExpert, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
             </ScrollViewer>
 
             <Button Content="Refresh" Margin="10" HorizontalAlignment="Center" Command="{Binding Path=RefreshAggregatedVector, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
-            <Grid Margin="25">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel Margin="25">
 
-                <TextBlock Grid.Column="0"
-                           Text="Aggregated global priority vector" 
+                <TextBlock Text="Aggregated global priority vector" 
                            Margin="5" 
                            VerticalAlignment="Center"/>
 
-                <controls:MatrixGrid Grid.Column="1"
-                                     Matrix="{Binding ElementName=this, Path=AggregatedVector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                <StackPanel Orientation="Horizontal">
+
+                    <controls:StrMatrixControl
+                                     Matrix="{Binding Path=Alternatives, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                      Margin="5" 
                                      VerticalAlignment="Stretch"/>
-            </Grid>
+
+                    <controls:MatrixGrid
+                                     Matrix="{Binding Path=AggregatedVector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                     Margin="5" 
+                                     VerticalAlignment="Stretch"/>
+                </StackPanel>
+
+            </StackPanel>
         </StackPanel>
 
         <GridSplitter Grid.Column="1"

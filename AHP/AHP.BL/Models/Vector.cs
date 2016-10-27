@@ -26,6 +26,13 @@ namespace AHP.BL.Models
             return res;
         }
 
+        public static double Mult(params double[] x)
+        {
+            double res = 1.0;
+            for (int i = 0; i < x.Length; res *= x[i], ++i) ;
+            return res;
+        }
+
         public static double GeometricMean(Vector x)
         {
             double res = 1.0;

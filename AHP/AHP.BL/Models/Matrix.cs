@@ -9,6 +9,7 @@ namespace AHP.BL.Models
         private int _n;
         private int _m;
         public double[,] _a;
+        public string[,] _aStr;
 
         public Matrix()
         {
@@ -38,6 +39,15 @@ namespace AHP.BL.Models
             A = new double[N, M];
             for (int i = 0; i < N; ++i) A[i, 0] = x[i];
         }
+
+        public Matrix(params string[] x)
+        {
+            N = x.Length;
+            M = 1;
+            AStr = new string[N, M];
+            for (int i = 0; i < N; ++i) AStr[i, 0] = x[i];
+        }
+
         public Matrix(List<Vector> x)
         {
             N = x.FirstOrDefault().Length;
@@ -83,6 +93,24 @@ namespace AHP.BL.Models
                     N = M = 0;
                 }
                 SetProperty(ref _a, value);
+            }
+        }
+
+        public string[,] AStr
+        {
+            get { return _aStr; }
+            set
+            {
+                if (value != null)
+                {
+                    N = value.GetLength(0);
+                    M = value.GetLength(1);
+                }
+                else
+                {
+                    N = M = 0;
+                }
+                SetProperty(ref _aStr, value);
             }
         }
         public Vector GetRow(int index)

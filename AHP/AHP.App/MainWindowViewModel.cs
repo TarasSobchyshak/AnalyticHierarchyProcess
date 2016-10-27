@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using static System.Math;
+using static AHP.BL.Models.Vector;
 
 namespace AHP.App
 {
@@ -20,6 +21,7 @@ namespace AHP.App
         private Expert _selectedExpert;
         private string _expertName;
         private Matrix _aggregatedVector;
+        private Matrix _alternatives;
 
         public string ExpertName
         {
@@ -57,6 +59,12 @@ namespace AHP.App
             set { SetProperty(ref _aggregatedVector, value); }
         }
 
+        public Matrix Alternatives
+        {
+            get { return _alternatives; }
+            set { SetProperty(ref _alternatives, value); }
+        }
+
         public List<string> LayoutAlgorithmTypes
         {
             get { return layoutAlgorithmTypes; }
@@ -80,7 +88,7 @@ namespace AHP.App
             Graph = new Graph(true);
             Experts = new ObservableCollection<Expert>();
             AggregatedVector = new Matrix(1);
-
+            Alternatives = new Matrix(App.Tree.Alternatives.Select(c => c.Value).ToArray());
             Experts.Add(new Expert("Taras"));
             Experts.Add(new Expert("32423"));
 
@@ -193,9 +201,16 @@ namespace AHP.App
                 ).ToList();
 
             var temp = new Matrix(vectors);
-            var pcm = new PairwiseComparisonMatrix(temp, -1);
 
-            AggregatedVector = pcm.X;
+            var res = new Vector(temp.N);
+
+            for(int i = 0; i < temp.N;++i)
+            {
+                res[i] = Mult(temp.GetRow(i).X);
+            }
+
+            AggregatedVector = new Matrix(res);
+            SelectedExpert.RefreshGlobalPriorityVector();
         }
 
         //private void SaveTree()
